@@ -2,17 +2,26 @@ package ayds.winchester.songinfo.utils.converter
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import ayds.winchester.songinfo.utils.converter.AnioBisiesto.getAnioBisiesto
+import ayds.winchester.songinfo.home.model.entities.Song
+
+import ayds.winchester.songinfo.home.view.AnioBisiesto.getAnioBisiesto
 import java.time.Month
 import java.util.*
 
+object DateFactory {
+    fun get( song: Song.SpotifySong) =
+        when (song.releaseDatePrecision) {
+            "day" -> DateConverterDayImpl(song.releaseDate)
+            "month" -> DateConverterMonthImpl(song.releaseDate)
+            else-> DateConverterYearImpl(song.releaseDate)
 
-interface DateConverter {
-    fun getDateConverted(date : String): String
+        }
+}
+sealed class DateConverter {
+    abstract fun getDateConverted(date : String): String
 }
 
-internal object DateConverterDayImpl : DateConverter {
-
+class DateConverterDayImpl (releaseDate:String): DateConverter() {
     override fun getDateConverted(date: String): String {
         val delimiter = "-"
         val delimiterNuevo = "/"
@@ -21,8 +30,7 @@ internal object DateConverterDayImpl : DateConverter {
     }
 
 }
-
-internal object DateConverterMonthImpl : DateConverter {
+class DateConverterMonthImpl (date:String): DateConverter() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getDateConverted(date : String): String{
         val delimiter = "-"
@@ -33,8 +41,7 @@ internal object DateConverterMonthImpl : DateConverter {
     }
 
 }
-
-internal object DateConverterYearImpl : DateConverter {
+class DateConverterYearImpl (date:String): DateConverter() {
     override fun getDateConverted(date : String): String{
         var fecha = date
         fecha += if(getAnioBisiesto(Integer.parseInt(date))){

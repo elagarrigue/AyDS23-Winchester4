@@ -65,16 +65,10 @@ internal class JsonToSongResolver : SpotifyToSongResolver {
         return album[NAME].asString
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     private fun JsonObject.getReleaseDate(): String {
         val album = this[ALBUM].asJsonObject
-        val releaseDate= album[RELEASE_DATE].asString
-        return when(album[RELEASE_DATE_PRECISION].asString) {
-            DAY_RELEASE_DATE_PRECISION -> DateConverterDayImpl.getDateConverted(releaseDate)
-            MONTH_RELEASE_DATE_PRECISION -> DateConverterMonthImpl.getDateConverted(releaseDate)
-            YEAR_RELEASE_DATE_PRECISION -> DateConverterYearImpl.getDateConverted(releaseDate)
-            else -> ""
-        }
+        return album[RELEASE_DATE].asString
     }
 
     private fun JsonObject.getImageUrl(): String {
