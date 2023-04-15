@@ -4,9 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import ayds.winchester.songinfo.home.model.entities.Song.SpotifySong
-import ayds.winchester.songinfo.utils.converter.DateConverterDayImpl
-import ayds.winchester.songinfo.utils.converter.DateConverterMonthImpl
-import ayds.winchester.songinfo.utils.converter.DateConverterYearImpl
 import com.google.gson.JsonObject
 
 interface SpotifyToSongResolver {
@@ -30,8 +27,6 @@ private const val MONTH_RELEASE_DATE_PRECISION = "month"
 private const val YEAR_RELEASE_DATE_PRECISION = "year"
 
 internal class JsonToSongResolver : SpotifyToSongResolver {
-
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun getSongFromExternalData(serviceData: String?): SpotifySong? =
         try {
             serviceData?.getFirstItem()?.let { item ->
@@ -64,7 +59,6 @@ internal class JsonToSongResolver : SpotifyToSongResolver {
         val album = this[ALBUM].asJsonObject
         return album[NAME].asString
     }
-
 
     private fun JsonObject.getReleaseDate(): String {
         val album = this[ALBUM].asJsonObject
