@@ -21,18 +21,18 @@ internal class DateConverterMonthImpl (private val releaseDate:String): Converte
             "02"->"February"
             "03"->"March"
             "04"->"April"
-            "05"->"May "
-            "06"->"June "
+            "05"->"May"
+            "06"->"June"
             "07"->"July"
             "08"->"August"
-            "09"->"September "
+            "09"->"September"
             "10"->"October"
-            "11"->"November "
-            "12"->"December "
+            "11"->"November"
+            "12"->"December"
             else->""
 
         }
-        return month +","+fecha[0]
+        return month +", "+fecha[0]
     }
 
 }
@@ -42,9 +42,9 @@ internal class DateConverterYearImpl (private val releaseDate:String): Converter
     override fun convertDate(): String{
         var fecha = releaseDate
         fecha += if(getAnioBisiesto(Integer.parseInt(releaseDate))){
-            "( a leap year)"
+            "(a leap year)"
         } else{
-            "( not a leap year)"
+            "(not a leap year)"
         }
         return fecha
     }

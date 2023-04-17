@@ -9,7 +9,7 @@ import ayds.winchester.songinfo.home.model.entities.Song
 
 private const val dia ="day"
 private const val mes="month"
-private const val ano="year"
+private const val anio="year"
 interface DateFactory {
     fun getDateConverted( song: Song.SpotifySong):Converter
 }
@@ -18,7 +18,7 @@ class DateFactoryImpl:DateFactory{
         when (song.releaseDatePrecision) {
             dia -> DateConverterDayImpl(song.releaseDate)
             mes -> DateConverterMonthImpl(song.releaseDate)
-            ano -> DateConverterYearImpl(song.releaseDate)
+            anio -> DateConverterYearImpl(song.releaseDate)
             else -> DateConverterDefaultImpl(song.releaseDate)
         }
     }
