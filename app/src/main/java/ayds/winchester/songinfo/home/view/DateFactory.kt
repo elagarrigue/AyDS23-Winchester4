@@ -7,18 +7,18 @@ import DateConverterMonthImpl
 import DateConverterYearImpl
 import ayds.winchester.songinfo.home.model.entities.Song
 
-private const val day ="day"
-private const val month="month"
-private const val year="year"
+private const val DAY ="day"
+private const val MONTH="month"
+private const val YEAR="year"
 interface DateFactory {
     fun getDateConverted( song: Song.SpotifySong):Converter
 }
 class DateFactoryImpl:DateFactory{
     override fun getDateConverted( song: Song.SpotifySong) =
         when (song.releaseDatePrecision) {
-            day -> DateConverterDayImpl(song.releaseDate)
-            month -> DateConverterMonthImpl(song.releaseDate)
-            year -> DateConverterYearImpl(song.releaseDate)
+            DAY -> DateConverterDayImpl(song.releaseDate)
+            MONTH -> DateConverterMonthImpl(song.releaseDate)
+            YEAR -> DateConverterYearImpl(song.releaseDate)
             else -> DateConverterDefaultImpl(song.releaseDate)
         }
     }
