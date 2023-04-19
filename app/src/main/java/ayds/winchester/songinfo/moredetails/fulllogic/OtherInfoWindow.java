@@ -95,7 +95,7 @@ public class OtherInfoWindow extends AppCompatActivity {
 
                   // save to DB  <o/
 
-                  DataBase.saveArtist(dataBase, artistName, text);
+                  DataBase.saveArtist(dataBase,artistName, text);
                 }
 
 
@@ -147,7 +147,7 @@ public class OtherInfoWindow extends AppCompatActivity {
 
     dataBase = new DataBase(this);
 
-    DataBase.saveArtist(dataBase, "test", "sarasa");
+    DataBase.saveArtist( dataBase,"test", "sarasa");
 
 
     Log.e("TAG", ""+ DataBase.getInfo(dataBase,"test"));
