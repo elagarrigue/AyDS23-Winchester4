@@ -15,7 +15,6 @@ import com.squareup.picasso.Picasso
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.io.IOException
 import java.util.*
 
 class OtherInfoWindow : AppCompatActivity() {
@@ -27,17 +26,22 @@ class OtherInfoWindow : AppCompatActivity() {
         setContentView(R.layout.activity_other_info)
         textPane = findViewById(R.id.textPane2)
         dataBase = DataBase(this)
-        getArtistInfo(intent.getStringExtra(ARTIST_NAME_EXTRA))
+        open(intent.getStringExtra(ARTIST_NAME_EXTRA))
     }
 
     private fun getCallResponseFromWikipediaAPI(artistName: String?): Response<String> {
             val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .build()
+                                   .baseUrl(BASE_URL)
+                                   .addConverterFactory(ScalarsConverterFactory.create())
+                                   .build()
             val wikipediaAPI = retrofit.create(WikipediaAPI::class.java)
             return wikipediaAPI.getArtistInfo(artistName).execute()
+    }
 
+    private fun open(artistName: String?){
+        Thread {
+            getArtistInfo(artistName)
+        }.start()
     }
 
     private fun getTextModify(descriptionArtist: String?, artistName: String?) {
@@ -52,27 +56,26 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun getArtistInfo(artistName: String?) {
-     /*   var infoArtistToModify = DataBase.getInfo(dataBase,artistName)
-        if(infoArtistToModify != null){
-            infoArtistToModify = "[*]$infoArtistToModify"
+        var infoArtistToModify = DataBase.getInfo(dataBase,artistName)
+        infoArtistToModify = if(infoArtistToModify != null){
+            "[*]$infoArtistToModify"
+        } else {
+            getInfoArtistFromDataBase(artistName)
         }
-        else {*/
-            Thread {
-                try {
-                    val callResponse = getCallResponseFromWikipediaAPI(artistName)
-                    val gsonObject = Gson()
-                    val jsonObjectFromGson = gsonObject.fromJson(callResponse.body(), JsonObject::class.java)
-                    val artistInformation = jsonObjectFromGson["query"].asJsonObject
-                    val artistInformationBlokeSearch = artistInformation["search"].asJsonArray[0].asJsonObject
-                    val informationSearchBlokeDescriptionArtist = artistInformationBlokeSearch["snippet"]
-                    val informationSearchBlokePageIdOfArtist = artistInformationBlokeSearch["pageid"]
-                    val infoArtistToModify = informationSearchBlokeDescriptionArtist.asString.replace("\\n", "\n")
-                    openWikiUrlFromArtist(informationSearchBlokePageIdOfArtist.asString)
-                    getTextModify(infoArtistToModify, artistName)
-                } catch (e1: IOException) {
-                    e1.printStackTrace()
-                }
-            }.start()
+        getTextModify(infoArtistToModify, artistName)
+    }
+
+    private fun getInfoArtistFromDataBase(artistName: String?): String {
+            val callResponse = getCallResponseFromWikipediaAPI(artistName)
+            val gsonObject = Gson()
+            val jsonObjectFromGson = gsonObject.fromJson(callResponse.body(), JsonObject::class.java)
+            val artistInformation = jsonObjectFromGson["query"].asJsonObject
+            val artistInformationBlokeSearch = artistInformation["search"].asJsonArray[0].asJsonObject
+            val informationSearchBlokeDescriptionArtist = artistInformationBlokeSearch["snippet"]
+            val informationSearchBlokePageIdOfArtist = artistInformationBlokeSearch["pageid"]
+            val infoArtistToModify = informationSearchBlokeDescriptionArtist.asString.replace("\\n", "\n")
+            openWikiUrlFromArtist(informationSearchBlokePageIdOfArtist.asString)
+            return infoArtistToModify
     }
 
     private fun openWikiUrlFromArtist(PageIdOfArtist: String) {
@@ -94,8 +97,7 @@ class OtherInfoWindow : AppCompatActivity() {
     companion object {
         const val ARTIST_NAME_EXTRA = "artistName"
         const val BASE_URL = "https://en.wikipedia.org/w/"
-        const val IMAGE_URL =
-            "https://upload.wikimedia.org/wikipedia/commons/8/8c/Wikipedia-logo-v2-es.png"
+        const val IMAGE_URL = "https://upload.wikimedia.org/wikipedia/commons/8/8c/Wikipedia-logo-v2-es.png"
         const val BASE_WIKI_URL = "https://en.wikipedia.org/?curid="
         fun textToHtml(artistInfo: String, artistName: String?): String {
             val builder = StringBuilder()
