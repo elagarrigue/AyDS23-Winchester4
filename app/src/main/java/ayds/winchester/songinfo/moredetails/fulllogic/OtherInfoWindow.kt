@@ -20,7 +20,7 @@ import java.util.*
 class OtherInfoWindow : AppCompatActivity() {
     private var textPaneWithArtistInformation: TextView? = null
     private var dataBase: DataBase? = null
-    private var infoAboutArtistFromWikiAPI: String? = null
+    private var infoAboutArtist: String? = null
     private var artistName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +29,7 @@ class OtherInfoWindow : AppCompatActivity() {
         textPaneWithArtistInformation = findViewById(R.id.textPane2)
         dataBase = DataBase(this)
         artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
-        infoAboutArtistFromWikiAPI = DataBase.getInfo(dataBase,artistName)
+        infoAboutArtist = DataBase.getInfo(dataBase,artistName)
         startMoreInfoArtist()
     }
 
@@ -48,25 +48,25 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun getArtistInfo() {
-        infoAboutArtistFromWikiAPI = if(infoAboutArtistFromWikiAPI != null){
-            "[*]$infoAboutArtistFromWikiAPI"
+        infoAboutArtist = if(infoAboutArtist != null){
+            "[*]$infoAboutArtist"
         } else {
-            setInfoArtistFromDataBase()
+            searchInfoArtist()
         }
-        getTextModify()
+        setTextArtistInfo()
     }
 
-    private fun getTextModify() {
-        if (infoAboutArtistFromWikiAPI != null) {
-            DataBase.saveArtist(dataBase, artistName, infoAboutArtistFromWikiAPI)
+    private fun setTextArtistInfo() {
+        if (infoAboutArtist != null) {
+            DataBase.saveArtist(dataBase, artistName, infoAboutArtist)
         } else {
-            infoAboutArtistFromWikiAPI = "No Results"
+            infoAboutArtist = "No Results"
         }
         createMoreDetailsAboutArtistView()
     }
 
 
-    private fun setInfoArtistFromDataBase(): String {
+    private fun searchInfoArtist(): String {
         val informationSearchBlokeDescriptionArtist = Gson().fromJson(getCallResponseFromWikipediaAPI().body(), JsonObject::class.java)["query"].asJsonObject["search"].asJsonArray[0].asJsonObject["snippet"]
         setWikiUrlFromArtist()
         return informationSearchBlokeDescriptionArtist.asString.replace("\\n", "\n")
@@ -83,7 +83,7 @@ class OtherInfoWindow : AppCompatActivity() {
     private fun createMoreDetailsAboutArtistView() {
         runOnUiThread {
             Picasso.get().load(IMAGE_URL).into(findViewById<View>(R.id.imageView) as ImageView)
-            textPaneWithArtistInformation!!.text = Html.fromHtml(infoAboutArtistFromWikiAPI)
+            textPaneWithArtistInformation!!.text = Html.fromHtml(infoAboutArtist)
         }
     }
 
