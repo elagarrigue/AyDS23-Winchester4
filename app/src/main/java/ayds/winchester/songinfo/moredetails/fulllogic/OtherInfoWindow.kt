@@ -18,19 +18,20 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.*
 
 class OtherInfoWindow : AppCompatActivity() {
-    private var textPane: TextView? = null
+    private var textPaneWithArtistInformation: TextView? = null
     private var dataBase: DataBase? = null
-    private var infoArtistToModify: String? = null
+    private var infoAboutArtistFromWikiAPI: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_other_info)
 
-        textPane = findViewById(R.id.textPane2)
+        textPaneWithArtistInformation = findViewById(R.id.textPane2)
 
         dataBase = DataBase(this)
 
-        infoArtistToModify = DataBase.getInfo(dataBase,intent.getStringExtra(ARTIST_NAME_EXTRA))
+        infoAboutArtistFromWikiAPI = DataBase.getInfo(dataBase,intent.getStringExtra(ARTIST_NAME_EXTRA))
 
         open()
     }
@@ -51,8 +52,8 @@ class OtherInfoWindow : AppCompatActivity() {
 
     private fun getArtistInfo() {
 
-        infoArtistToModify = if(infoArtistToModify != null){
-            "[*]$infoArtistToModify"
+        infoAboutArtistFromWikiAPI = if(infoAboutArtistFromWikiAPI != null){
+            "[*]$infoAboutArtistFromWikiAPI"
         } else {
             getInfoArtistFromDataBase()
         }
@@ -61,10 +62,10 @@ class OtherInfoWindow : AppCompatActivity() {
 
     private fun getTextModify() {
 
-        if (infoArtistToModify != null) {
-            DataBase.saveArtist(dataBase, intent.getStringExtra(ARTIST_NAME_EXTRA), infoArtistToModify)
+        if (infoAboutArtistFromWikiAPI != null) {
+            DataBase.saveArtist(dataBase, intent.getStringExtra(ARTIST_NAME_EXTRA), infoAboutArtistFromWikiAPI)
         } else {
-            infoArtistToModify = "No Results"
+            infoAboutArtistFromWikiAPI = "No Results"
         }
         createMoreDetailsView()
     }
@@ -93,7 +94,7 @@ class OtherInfoWindow : AppCompatActivity() {
     private fun createMoreDetailsView() {
         runOnUiThread {
             Picasso.get().load(IMAGE_URL).into(findViewById<View>(R.id.imageView) as ImageView)
-            textPane!!.text = Html.fromHtml(infoArtistToModify)
+            textPaneWithArtistInformation!!.text = Html.fromHtml(infoAboutArtistFromWikiAPI)
         }
     }
 
