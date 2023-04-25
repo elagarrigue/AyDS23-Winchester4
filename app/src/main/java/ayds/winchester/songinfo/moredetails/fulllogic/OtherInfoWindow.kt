@@ -21,19 +21,16 @@ class OtherInfoWindow : AppCompatActivity() {
     private var textPaneWithArtistInformation: TextView? = null
     private var dataBase: DataBase? = null
     private var infoAboutArtistFromWikiAPI: String? = null
+    private var artistName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_other_info)
-
         textPaneWithArtistInformation = findViewById(R.id.textPane2)
-
         dataBase = DataBase(this)
-
-        infoAboutArtistFromWikiAPI = DataBase.getInfo(dataBase,intent.getStringExtra(ARTIST_NAME_EXTRA))
-
-        open()
+        artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
+        infoAboutArtistFromWikiAPI = DataBase.getInfo(dataBase,artistName)
+        startMoreInfoArtist()
     }
 
     private fun getCallResponseFromWikipediaAPI(): Response<String> {
@@ -41,57 +38,49 @@ class OtherInfoWindow : AppCompatActivity() {
                                    .baseUrl(BASE_URL)
                                    .addConverterFactory(ScalarsConverterFactory.create())
                                    .build()
-            return retrofit.create(WikipediaAPI::class.java).getArtistInfo(intent.getStringExtra(ARTIST_NAME_EXTRA)).execute()
+            return retrofit.create(WikipediaAPI::class.java).getArtistInfo(artistName).execute()
     }
 
-    private fun open(){
+    private fun startMoreInfoArtist(){
         Thread {
             getArtistInfo()
         }.start()
     }
 
     private fun getArtistInfo() {
-
         infoAboutArtistFromWikiAPI = if(infoAboutArtistFromWikiAPI != null){
             "[*]$infoAboutArtistFromWikiAPI"
         } else {
-            getInfoArtistFromDataBase()
+            setInfoArtistFromDataBase()
         }
         getTextModify()
     }
 
     private fun getTextModify() {
-
         if (infoAboutArtistFromWikiAPI != null) {
-            DataBase.saveArtist(dataBase, intent.getStringExtra(ARTIST_NAME_EXTRA), infoAboutArtistFromWikiAPI)
+            DataBase.saveArtist(dataBase, artistName, infoAboutArtistFromWikiAPI)
         } else {
             infoAboutArtistFromWikiAPI = "No Results"
         }
-        createMoreDetailsView()
+        createMoreDetailsAboutArtistView()
     }
 
 
-    private fun getInfoArtistFromDataBase(): String {
-
-
-            val informationSearchBlokeDescriptionArtist = Gson().fromJson(getCallResponseFromWikipediaAPI().body(), JsonObject::class.java)["query"].asJsonObject["search"].asJsonArray[0].asJsonObject["snippet"]
-
-            openWikiUrlFromArtist()
-
-            return informationSearchBlokeDescriptionArtist.asString.replace("\\n", "\n")
+    private fun setInfoArtistFromDataBase(): String {
+        val informationSearchBlokeDescriptionArtist = Gson().fromJson(getCallResponseFromWikipediaAPI().body(), JsonObject::class.java)["query"].asJsonObject["search"].asJsonArray[0].asJsonObject["snippet"]
+        setWikiUrlFromArtist()
+        return informationSearchBlokeDescriptionArtist.asString.replace("\\n", "\n")
     }
 
-    private fun openWikiUrlFromArtist() {
-
+    private fun setWikiUrlFromArtist() {
         val informationSearchBlokePageIdOfArtist = Gson().fromJson(getCallResponseFromWikipediaAPI().body(), JsonObject::class.java)["query"].asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"]
-
         findViewById<View>(R.id.openUrlButton).setOnClickListener {
             Intent(Intent.ACTION_VIEW).data = Uri.parse(BASE_WIKI_URL + informationSearchBlokePageIdOfArtist.asString)
             startActivity(intent)
         }
     }
 
-    private fun createMoreDetailsView() {
+    private fun createMoreDetailsAboutArtistView() {
         runOnUiThread {
             Picasso.get().load(IMAGE_URL).into(findViewById<View>(R.id.imageView) as ImageView)
             textPaneWithArtistInformation!!.text = Html.fromHtml(infoAboutArtistFromWikiAPI)
@@ -103,18 +92,5 @@ class OtherInfoWindow : AppCompatActivity() {
         const val BASE_URL = "https://en.wikipedia.org/w/"
         const val IMAGE_URL = "https://upload.wikimedia.org/wikipedia/commons/8/8c/Wikipedia-logo-v2-es.png"
         const val BASE_WIKI_URL = "https://en.wikipedia.org/?curid="
-        fun textToHtml(artistInfo: String, artistName: String?): String {
-            val builder = StringBuilder()
-            val textWithBold = artistInfo.replace("'", " ")
-                                         .replace("\n", "<br>")
-                                         .replace("(?i)$artistName".toRegex(),"<b>"
-                                                 + artistName!!.uppercase(Locale.getDefault())
-                                                 + "</b>")
-            builder.append("<html><div width=400>")
-                   .append("<font face=\"arial\">")
-                   .append(textWithBold)
-                   .append("</font></div></html>")
-            return builder.toString()
-        }
     }
 }
