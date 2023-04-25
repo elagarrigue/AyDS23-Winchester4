@@ -20,77 +20,80 @@ import java.util.*
 class OtherInfoWindow : AppCompatActivity() {
     private var textPane: TextView? = null
     private var dataBase: DataBase? = null
+    private var infoArtistToModify: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_other_info)
+
         textPane = findViewById(R.id.textPane2)
+
         dataBase = DataBase(this)
-        open(intent.getStringExtra(ARTIST_NAME_EXTRA))
+
+        infoArtistToModify = DataBase.getInfo(dataBase,intent.getStringExtra(ARTIST_NAME_EXTRA))
+
+        open()
     }
 
-    private fun getCallResponseFromWikipediaAPI(artistName: String?): Response<String> {
+    private fun getCallResponseFromWikipediaAPI(): Response<String> {
             val retrofit = Retrofit.Builder()
                                    .baseUrl(BASE_URL)
                                    .addConverterFactory(ScalarsConverterFactory.create())
                                    .build()
-            val wikipediaAPI = retrofit.create(WikipediaAPI::class.java)
-            return wikipediaAPI.getArtistInfo(artistName).execute()
+            return retrofit.create(WikipediaAPI::class.java).getArtistInfo(intent.getStringExtra(ARTIST_NAME_EXTRA)).execute()
     }
 
-    private fun open(artistName: String?){
+    private fun open(){
         Thread {
-            getArtistInfo(artistName)
+            getArtistInfo()
         }.start()
     }
 
-    private fun getTextModify(descriptionArtist: String?, artistName: String?) {
-        val artistInfoModify: String
-        if (descriptionArtist != null) {
-            artistInfoModify = textToHtml(descriptionArtist, artistName)
-            DataBase.saveArtist(dataBase, artistName, artistInfoModify)
-        } else {
-            artistInfoModify = "No Results"
-        }
-        createMoreDetailsView(artistInfoModify)
-    }
+    private fun getArtistInfo() {
 
-    private fun getArtistInfo(artistName: String?) {
-        var infoArtistToModify = DataBase.getInfo(dataBase,artistName)
         infoArtistToModify = if(infoArtistToModify != null){
             "[*]$infoArtistToModify"
         } else {
-            getInfoArtistFromDataBase(artistName)
+            getInfoArtistFromDataBase()
         }
-        getTextModify(infoArtistToModify, artistName)
+        getTextModify()
     }
 
-    private fun getInfoArtistFromDataBase(artistName: String?): String {
-            val callResponse = getCallResponseFromWikipediaAPI(artistName)
-            val gsonObject = Gson()
-            val jsonObjectFromGson = gsonObject.fromJson(callResponse.body(), JsonObject::class.java)
-            val artistInformation = jsonObjectFromGson["query"].asJsonObject
-            val artistInformationBlokeSearch = artistInformation["search"].asJsonArray[0].asJsonObject
-            val informationSearchBlokeDescriptionArtist = artistInformationBlokeSearch["snippet"]
-            val informationSearchBlokePageIdOfArtist = artistInformationBlokeSearch["pageid"]
-            val infoArtistToModify = informationSearchBlokeDescriptionArtist.asString.replace("\\n", "\n")
-            openWikiUrlFromArtist(informationSearchBlokePageIdOfArtist.asString)
-            return infoArtistToModify
+    private fun getTextModify() {
+
+        if (infoArtistToModify != null) {
+            DataBase.saveArtist(dataBase, intent.getStringExtra(ARTIST_NAME_EXTRA), infoArtistToModify)
+        } else {
+            infoArtistToModify = "No Results"
+        }
+        createMoreDetailsView()
     }
 
-    private fun openWikiUrlFromArtist(PageIdOfArtist: String) {
-        val urlString = BASE_WIKI_URL + PageIdOfArtist
+
+    private fun getInfoArtistFromDataBase(): String {
+
+
+            val informationSearchBlokeDescriptionArtist = Gson().fromJson(getCallResponseFromWikipediaAPI().body(), JsonObject::class.java)["query"].asJsonObject["search"].asJsonArray[0].asJsonObject["snippet"]
+
+            openWikiUrlFromArtist()
+
+            return informationSearchBlokeDescriptionArtist.asString.replace("\\n", "\n")
+    }
+
+    private fun openWikiUrlFromArtist() {
+
+        val informationSearchBlokePageIdOfArtist = Gson().fromJson(getCallResponseFromWikipediaAPI().body(), JsonObject::class.java)["query"].asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"]
+
         findViewById<View>(R.id.openUrlButton).setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(urlString)
+            Intent(Intent.ACTION_VIEW).data = Uri.parse(BASE_WIKI_URL + informationSearchBlokePageIdOfArtist.asString)
             startActivity(intent)
         }
     }
 
-    private fun createMoreDetailsView(artistInfoModify: String) {
+    private fun createMoreDetailsView() {
         runOnUiThread {
             Picasso.get().load(IMAGE_URL).into(findViewById<View>(R.id.imageView) as ImageView)
-            textPane!!.text =Html.fromHtml(artistInfoModify)
+            textPane!!.text = Html.fromHtml(infoArtistToModify)
         }
     }
 
