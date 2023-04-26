@@ -6,30 +6,34 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+
 private const val ARTIST="artist"
 private const val ARTISTS="artists"
 private const val INFO="info"
 private const val SOURCE="source"
 private const val ID="id"
-class DataBase(context: Context?) : SQLiteOpenHelper(context, "dictionary.db", null, 1) {
+private const val SOURCENUMONE=1
+private const val NAMEDATABASE="dictionary.db"
+private const val CREATETABLE="create table artists (id INTEGER PRIMARY KEY AUTOINCREMENT, artist string, info string, source integer)"
+private const val VERSIONDATABASE=1
+
+class DataBase(context: Context?) : SQLiteOpenHelper(context, NAMEDATABASE, null, VERSIONDATABASE) {
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
-            "create table artists (id INTEGER PRIMARY KEY AUTOINCREMENT, artist string, info string, source integer)"
+            CREATETABLE
         )
-        Log.i("DB", "DB created")
     }
+
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
 
-
     private fun createMapValues(values: ContentValues, artist: String, info: String) {
-        val source = 1
         values.put(ARTIST, artist)
         values.put(INFO, info)
-        values.put(SOURCE, source)
+        values.put(SOURCE, SOURCENUMONE)
     }
 
     private fun getDataBaseWritable(): SQLiteDatabase {
-        return this.writableDatabase
+        return writableDatabase
     }
 
     fun saveArtist( artist: String, info: String) {
@@ -40,8 +44,9 @@ class DataBase(context: Context?) : SQLiteOpenHelper(context, "dictionary.db", n
     }
 
     private fun getDataBaseReadable(): SQLiteDatabase {
-        return this.readableDatabase
+        return readableDatabase
     }
+
     private fun createCursor(
         dataBase: SQLiteDatabase,
         artist: String
@@ -51,9 +56,9 @@ class DataBase(context: Context?) : SQLiteOpenHelper(context, "dictionary.db", n
             ARTIST,
             INFO
         )
-        val selection = "artist  = ?"
+        val selection = ARTIST+ " = ?"
         val selectionArgs = arrayOf(artist)
-        val sortOrder = "artist DESC"
+        val sortOrder = ARTIST+" DESC"
         return dataBase.query(
             ARTISTS,
             projection,
@@ -64,6 +69,7 @@ class DataBase(context: Context?) : SQLiteOpenHelper(context, "dictionary.db", n
             sortOrder
         )
     }
+
     private fun addItems(cursor: Cursor, items: MutableList<String>) {
         while (cursor.moveToNext()) {
             val info = cursor.getString(cursor.getColumnIndexOrThrow(INFO))
@@ -79,5 +85,4 @@ class DataBase(context: Context?) : SQLiteOpenHelper(context, "dictionary.db", n
         addItems(cursor, items)
         return if (items.isEmpty()) null else items[0]
     }
-
 }
