@@ -29,7 +29,7 @@ class OtherInfoWindow : AppCompatActivity() {
         textPaneWithArtistInformation = findViewById(R.id.textPane2)
         dataBase = DataBase(this)
         artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
-        infoAboutArtist = DataBase.getInfo(dataBase,artistName)
+        infoAboutArtist = artistName?.let { dataBase!!.getInfo(it) }
         startMoreInfoArtist()
     }
 
@@ -58,7 +58,7 @@ class OtherInfoWindow : AppCompatActivity() {
 
     private fun setTextArtistInfo() {
         if (infoAboutArtist != null) {
-            DataBase.saveArtist(dataBase, artistName, infoAboutArtist)
+            artistName?.let { dataBase?.saveArtist(it, infoAboutArtist!!) }
         } else {
             infoAboutArtist = "No Results"
         }
