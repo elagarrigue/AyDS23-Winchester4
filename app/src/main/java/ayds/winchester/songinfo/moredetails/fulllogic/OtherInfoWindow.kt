@@ -10,12 +10,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import ayds.winchester.songinfo.R
 import com.google.gson.Gson
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.squareup.picasso.Picasso
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.util.*
 
 class OtherInfoWindow : AppCompatActivity() {
     private var textPaneWithArtistInformation: TextView? = null
@@ -65,15 +65,18 @@ class OtherInfoWindow : AppCompatActivity() {
         createMoreDetailsAboutArtistView()
     }
 
+    private fun getJsonFromAPI(): JsonElement {
+        return Gson().fromJson(getCallResponseFromWikipediaAPI().body(), JsonObject::class.java).get("query")
+    }
 
     private fun searchInfoArtist(): String {
-        val informationSearchBlokeDescriptionArtist = Gson().fromJson(getCallResponseFromWikipediaAPI().body(), JsonObject::class.java)["query"].asJsonObject["search"].asJsonArray[0].asJsonObject["snippet"]
+        val informationSearchBlokeDescriptionArtist = getJsonFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["snippet"]
         setWikiUrlFromArtist()
         return informationSearchBlokeDescriptionArtist.asString.replace("\\n", "\n")
     }
 
     private fun setWikiUrlFromArtist() {
-        val informationSearchBlokePageIdOfArtist = Gson().fromJson(getCallResponseFromWikipediaAPI().body(), JsonObject::class.java)["query"].asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"]
+        val informationSearchBlokePageIdOfArtist = getJsonFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"]
         findViewById<View>(R.id.openUrlButton).setOnClickListener {
             Intent(Intent.ACTION_VIEW).data = Uri.parse(BASE_WIKI_URL + informationSearchBlokePageIdOfArtist.asString)
             startActivity(intent)
