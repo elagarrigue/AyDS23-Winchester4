@@ -26,11 +26,28 @@ class OtherInfoWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_other_info)
-        textPaneWithArtistInformation = findViewById(R.id.textPane2)
-        dataBase = DataBase(this)
-        artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
-        infoAboutArtist = artistName?.let { dataBase!!.getInfo(it) }
+
+        initTextPaneArtist()
+        initDataBase()
+        initArtistName()
+        initInfoAboutArtist()
         startMoreInfoArtist()
+    }
+
+    private fun initTextPaneArtist() {
+        textPaneWithArtistInformation = findViewById(R.id.textPane2)
+    }
+
+    private fun initDataBase() {
+        dataBase = DataBase(this)
+    }
+
+    private fun initArtistName() {
+        artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
+    }
+
+    private fun initInfoAboutArtist() {
+        infoAboutArtist = artistName?.let { dataBase!!.getInfo(it) }
     }
 
     private fun getCallResponseFromWikipediaAPI(): Response<String> {
@@ -65,29 +82,43 @@ class OtherInfoWindow : AppCompatActivity() {
         createMoreDetailsAboutArtistView()
     }
 
-    private fun getJsonFromAPI(): JsonElement {
+    private fun getJsonQueryFromAPI(): JsonElement {
         return Gson().fromJson(getCallResponseFromWikipediaAPI().body(), JsonObject::class.java).get("query")
     }
 
+    private fun getArtistSnippet() : JsonElement{
+        return getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["snippet"]
+    }
+
+    private fun getArtistPageId() : JsonElement{
+        return getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"]
+    }
+
     private fun searchInfoArtist(): String {
-        val informationSearchBlokeDescriptionArtist = getJsonFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["snippet"]
         setWikiUrlFromArtist()
-        return informationSearchBlokeDescriptionArtist.asString.replace("\\n", "\n")
+        return getArtistSnippet().asString.replace("\\n", "\n")
     }
 
     private fun setWikiUrlFromArtist() {
-        val informationSearchBlokePageIdOfArtist = getJsonFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"]
         findViewById<View>(R.id.openUrlButton).setOnClickListener {
-            Intent(Intent.ACTION_VIEW).data = Uri.parse(BASE_WIKI_URL + informationSearchBlokePageIdOfArtist.asString)
+            Intent(Intent.ACTION_VIEW).data = Uri.parse(BASE_WIKI_URL + getArtistPageId().asString)
             startActivity(intent)
         }
     }
 
     private fun createMoreDetailsAboutArtistView() {
         runOnUiThread {
-            Picasso.get().load(IMAGE_URL).into(findViewById<View>(R.id.imageView) as ImageView)
-            textPaneWithArtistInformation!!.text = Html.fromHtml(infoAboutArtist)
+            createImageMoreDetailsAboutArtistView()
+            createTextMoreDetailsAboutArtistView()
         }
+    }
+
+    private fun createImageMoreDetailsAboutArtistView() {
+            Picasso.get().load(IMAGE_URL).into(findViewById<View>(R.id.imageView) as ImageView)
+    }
+
+    private fun createTextMoreDetailsAboutArtistView() {
+            textPaneWithArtistInformation!!.text = Html.fromHtml(infoAboutArtist)
     }
 
     companion object {
