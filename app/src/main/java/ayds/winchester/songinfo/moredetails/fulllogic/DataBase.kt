@@ -18,6 +18,11 @@ private const val CREATETABLE="create table artists (id INTEGER PRIMARY KEY AUTO
 private const val VERSIONDATABASE=1
 
 class DataBase(context: Context?) : SQLiteOpenHelper(context, NAMEDATABASE, null, VERSIONDATABASE) {
+    private val projection = arrayOf(
+        ID,
+        ARTIST,
+        INFO
+    )
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
             CREATETABLE
@@ -26,10 +31,12 @@ class DataBase(context: Context?) : SQLiteOpenHelper(context, NAMEDATABASE, null
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
 
-    private fun createMapValues(values: ContentValues, artist: String, info: String) {
+    private fun createMapValues(artist: String, info: String):ContentValues {
+        val values = ContentValues()
         values.put(ARTIST, artist)
         values.put(INFO, info)
         values.put(SOURCE, SOURCENUMONE)
+        return values
     }
 
     private fun getDataBaseWritable(): SQLiteDatabase {
@@ -38,8 +45,7 @@ class DataBase(context: Context?) : SQLiteOpenHelper(context, NAMEDATABASE, null
 
     fun saveArtist( artist: String, info: String) {
         val database = getDataBaseWritable()
-        val values = ContentValues()
-        createMapValues(values, artist, info)
+        val values = createMapValues(artist, info)
         database.insert(ARTISTS, null, values)
     }
 
@@ -51,14 +57,9 @@ class DataBase(context: Context?) : SQLiteOpenHelper(context, NAMEDATABASE, null
         dataBase: SQLiteDatabase,
         artist: String
     ): Cursor {
-        val projection = arrayOf(
-            ID,
-            ARTIST,
-            INFO
-        )
-        val selection = ARTIST+ " = ?"
+        val selection = "$ARTIST = ?"
         val selectionArgs = arrayOf(artist)
-        val sortOrder = ARTIST+" DESC"
+        val sortOrder = "$ARTIST DESC"
         return dataBase.query(
             ARTISTS,
             projection,
@@ -78,11 +79,11 @@ class DataBase(context: Context?) : SQLiteOpenHelper(context, NAMEDATABASE, null
         cursor.close()
     }
 
-    fun getInfo( artist: String): String? {
+    fun getArtistInfo( artist: String): String? {
         val database = getDataBaseReadable()
         val cursor = createCursor(database, artist)
         val items: MutableList<String> = ArrayList()
         addItems(cursor, items)
-        return if (items.isEmpty()) null else items[0]
+        return items.firstOrNull()
     }
 }
