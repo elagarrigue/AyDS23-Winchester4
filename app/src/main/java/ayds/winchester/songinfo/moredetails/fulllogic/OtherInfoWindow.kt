@@ -47,7 +47,7 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun initInfoAboutArtist() {
-        infoAboutArtist = artistName?.let { dataBase!!.getInfo(it) }
+        infoAboutArtist = artistName?.let { dataBase!!.getArtistInfo(it) }
     }
 
     private fun getCallResponseFromWikipediaAPI(): Response<String> {
@@ -65,21 +65,33 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun getArtistInfo() {
-        infoAboutArtist = if(infoAboutArtist != null){
-            "[*]$infoAboutArtist"
+        if(infoAboutArtist != null){
+            addAsterisk()
         } else {
             searchInfoArtist()
         }
         setTextArtistInfo()
     }
 
+    private fun addAsterisk() {
+        infoAboutArtist =  "[*]$infoAboutArtist"
+    }
+
     private fun setTextArtistInfo() {
         if (infoAboutArtist != null) {
-            artistName?.let { dataBase?.saveArtist(it, infoAboutArtist!!) }
+            saveArtistInfo()
         } else {
-            infoAboutArtist = "No Results"
+            setNoResults()
         }
         createMoreDetailsAboutArtistView()
+    }
+
+    private fun saveArtistInfo() {
+        artistName?.let { dataBase?.saveArtist(it, infoAboutArtist!!) }
+    }
+
+    private fun setNoResults() {
+        infoAboutArtist = "No Results"
     }
 
     private fun getJsonQueryFromAPI(): JsonElement {
