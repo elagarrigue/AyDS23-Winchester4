@@ -20,8 +20,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 class OtherInfoWindow : AppCompatActivity() {
     private var textPaneWithArtistInformation: TextView? = null
     private var dataBase: DataBase? = null
-    private var infoAboutArtist: String? = null
-    private var artistName: String? = null
+    private var infoAboutArtistDataClass: InfoAboutArtist? = InfoAboutArtist(null, null, null, false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +28,7 @@ class OtherInfoWindow : AppCompatActivity() {
 
         initTextPaneArtist()
         initDataBase()
-        initArtistName()
-        initInfoAboutArtist()
+        initInfoDataClass()
         startMoreInfoArtist()
     }
 
@@ -42,20 +40,24 @@ class OtherInfoWindow : AppCompatActivity() {
         dataBase = DataBase(this)
     }
 
-    private fun initArtistName() {
-        artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
+    private fun initInfoDataClass() {
+        infoAboutArtistDataClass?.artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
+        if (infoAboutArtistDataClass?.artistName?.let { dataBase!!.getArtistInfo(it) } != null) {
+            infoAboutArtistDataClass?.generalInformation =
+                infoAboutArtistDataClass?.artistName?.let { dataBase!!.getArtistInfo(it) }
+            infoAboutArtistDataClass?.existInDatabase = infoAboutArtistDataClass?.existInDatabase ?: true
+
+        }
     }
 
-    private fun initInfoAboutArtist() {
-        infoAboutArtist = artistName?.let { dataBase!!.getArtistInfo(it) }
-    }
+
 
     private fun getCallResponseFromWikipediaAPI(): Response<String> {
             val retrofit = Retrofit.Builder()
                                    .baseUrl(BASE_URL)
                                    .addConverterFactory(ScalarsConverterFactory.create())
                                    .build()
-            return retrofit.create(WikipediaAPI::class.java).getArtistInfo(artistName).execute()
+            return retrofit.create(WikipediaAPI::class.java).getArtistInfo(infoAboutArtistDataClass?.artistName).execute()
     }
 
     private fun startMoreInfoArtist(){
@@ -65,7 +67,7 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun getArtistInfo() {
-        if(infoAboutArtist != null){
+        if(infoAboutArtistDataClass?.existInDatabase == true){
             addAsterisk()
         } else {
             searchInfoArtist()
@@ -74,11 +76,11 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun addAsterisk() {
-        infoAboutArtist =  "[*]$infoAboutArtist"
+        infoAboutArtistDataClass?.generalInformation =  "[*]$infoAboutArtistDataClass?.generalInformation"
     }
 
     private fun setTextArtistInfo() {
-        if (infoAboutArtist != null) {
+        if (infoAboutArtistDataClass?.existInDatabase == false) {
             saveArtistInfo()
         } else {
             setNoResults()
@@ -87,11 +89,11 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun saveArtistInfo() {
-        artistName?.let { dataBase?.saveArtist(it, infoAboutArtist!!) }
+        infoAboutArtistDataClass?.artistName?.let { dataBase?.saveArtist(it, infoAboutArtistDataClass?.generalInformation!!) }
     }
 
     private fun setNoResults() {
-        infoAboutArtist = "No Results"
+        infoAboutArtistDataClass?.generalInformation = "No Results"
     }
 
     private fun getJsonQueryFromAPI(): JsonElement {
@@ -130,7 +132,7 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun createTextMoreDetailsAboutArtistView() {
-            textPaneWithArtistInformation!!.text = Html.fromHtml(infoAboutArtist)
+            textPaneWithArtistInformation!!.text = Html.fromHtml(infoAboutArtistDataClass?.generalInformation)
     }
 
     companion object {
