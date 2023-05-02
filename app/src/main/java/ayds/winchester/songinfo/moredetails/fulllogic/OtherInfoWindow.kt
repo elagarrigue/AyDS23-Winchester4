@@ -30,6 +30,7 @@ class OtherInfoWindow : AppCompatActivity() {
         initDataBase()
         initInfoDataClass()
         startMoreInfoArtist()
+        setWikiUrlFromArtist()
     }
 
     private fun initTextPaneArtist() {
@@ -67,6 +68,7 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun getArtistInfo() {
+        getArtistPageId()
         if(infoAboutArtist.existInDatabase){
             addAsterisk()
         } else {
@@ -107,16 +109,15 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun searchInfoArtist() {
-        getArtistPageId()
-        setWikiUrlFromArtist()
         infoAboutArtist.generalInformation = getArtistSnippet().asString.replace("\\n", "\n")
     }
 
     private fun setWikiUrlFromArtist() {
         findViewById<View>(R.id.openUrlButton).setOnClickListener {
-            Intent(Intent.ACTION_VIEW).data = Uri.parse(infoAboutArtist.url)
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(infoAboutArtist.url))
             startActivity(intent)
         }
+
     }
 
     private fun createMoreDetailsAboutArtistView() {
