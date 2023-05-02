@@ -20,7 +20,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 class OtherInfoWindow : AppCompatActivity() {
     private var textPaneWithArtistInformation: TextView? = null
     private var dataBase: DataBase? = null
-    private var infoAboutArtistDataClass: InfoAboutArtist? = InfoAboutArtist(null, null, null, false)
+    private var infoAboutArtist: InfoAboutArtist = InfoAboutArtist(null, null, null, false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,12 +41,12 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun initInfoDataClass() {
-        infoAboutArtistDataClass?.artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
-        if (infoAboutArtistDataClass?.artistName?.let { dataBase!!.getArtistInfo(it) } != null) {
-            infoAboutArtistDataClass?.generalInformation =
-                infoAboutArtistDataClass?.artistName?.let { dataBase!!.getArtistInfo(it) }
-            infoAboutArtistDataClass?.existInDatabase = infoAboutArtistDataClass?.existInDatabase ?: true
-
+        infoAboutArtist.artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
+        setNoResults()
+        if (infoAboutArtist.artistName?.let { dataBase!!.getArtistInfo(it) } != null) {
+            infoAboutArtist.generalInformation =
+                infoAboutArtist.artistName?.let { dataBase!!.getArtistInfo(it) }
+            infoAboutArtist.existInDatabase = true
         }
     }
 
@@ -57,7 +57,7 @@ class OtherInfoWindow : AppCompatActivity() {
                                    .baseUrl(BASE_URL)
                                    .addConverterFactory(ScalarsConverterFactory.create())
                                    .build()
-            return retrofit.create(WikipediaAPI::class.java).getArtistInfo(infoAboutArtistDataClass?.artistName).execute()
+            return retrofit.create(WikipediaAPI::class.java).getArtistInfo(infoAboutArtist.artistName).execute()
     }
 
     private fun startMoreInfoArtist(){
@@ -67,7 +67,7 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun getArtistInfo() {
-        if(infoAboutArtistDataClass?.existInDatabase == true){
+        if(infoAboutArtist.existInDatabase){
             addAsterisk()
         } else {
             searchInfoArtist()
@@ -76,24 +76,22 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun addAsterisk() {
-        infoAboutArtistDataClass?.generalInformation =  "[*]$infoAboutArtistDataClass?.generalInformation"
+        infoAboutArtist.generalInformation = "[*]" + infoAboutArtist.generalInformation
     }
 
     private fun setTextArtistInfo() {
-        if (infoAboutArtistDataClass?.existInDatabase == false) {
+        if (!infoAboutArtist.existInDatabase) {
             saveArtistInfo()
-        } else {
-            setNoResults()
         }
         createMoreDetailsAboutArtistView()
     }
 
     private fun saveArtistInfo() {
-        infoAboutArtistDataClass?.artistName?.let { dataBase?.saveArtist(it, infoAboutArtistDataClass?.generalInformation!!) }
+        infoAboutArtist.artistName?.let { dataBase?.saveArtist(it, infoAboutArtist.generalInformation!!) }
     }
 
     private fun setNoResults() {
-        infoAboutArtistDataClass?.generalInformation = "No Results"
+        infoAboutArtist.generalInformation = "No Results"
     }
 
     private fun getJsonQueryFromAPI(): JsonElement {
@@ -104,18 +102,19 @@ class OtherInfoWindow : AppCompatActivity() {
         return getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["snippet"]
     }
 
-    private fun getArtistPageId() : JsonElement{
-        return getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"]
+    private fun getArtistPageId(){
+        infoAboutArtist.url = BASE_WIKI_URL + getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"].toString()
     }
 
-    private fun searchInfoArtist(): String {
+    private fun searchInfoArtist() {
+        getArtistPageId()
         setWikiUrlFromArtist()
-        return getArtistSnippet().asString.replace("\\n", "\n")
+        infoAboutArtist.generalInformation = getArtistSnippet().asString.replace("\\n", "\n")
     }
 
     private fun setWikiUrlFromArtist() {
         findViewById<View>(R.id.openUrlButton).setOnClickListener {
-            Intent(Intent.ACTION_VIEW).data = Uri.parse(BASE_WIKI_URL + getArtistPageId().asString)
+            Intent(Intent.ACTION_VIEW).data = Uri.parse(infoAboutArtist.url)
             startActivity(intent)
         }
     }
@@ -132,7 +131,7 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun createTextMoreDetailsAboutArtistView() {
-            textPaneWithArtistInformation!!.text = Html.fromHtml(infoAboutArtistDataClass?.generalInformation)
+            textPaneWithArtistInformation!!.text = Html.fromHtml(infoAboutArtist.generalInformation)
     }
 
     companion object {
