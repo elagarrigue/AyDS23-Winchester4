@@ -111,10 +111,6 @@ class OtherInfoWindow : AppCompatActivity() {
         infoAboutArtist.url = BASE_WIKI_URL + getArtistPageId().toString()
     }
 
-    private fun getArtistPageId() : JsonElement{
-        return getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"]
-    }
-
     private fun addAsterisk() {
         infoAboutArtist.generalInformation = ASTERISK + infoAboutArtist.generalInformation
     }
@@ -129,6 +125,10 @@ class OtherInfoWindow : AppCompatActivity() {
 
     private fun getJsonQueryFromAPI(): JsonElement {
         return Gson().fromJson(getCallResponseFromWikipediaAPI().body(), JsonObject::class.java).get("query")
+    }
+
+    private fun getArtistPageId() : JsonElement{
+        return getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"]
     }
 
     private fun setTextArtistInfo() {
