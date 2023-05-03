@@ -72,7 +72,6 @@ class OtherInfoWindow : AppCompatActivity() {
 
     private fun setArtistGeneralInformation() {
         infoAboutArtist.generalInformation = infoAboutArtist.artistName?.let { dataBase!!.getArtistInfoFromDataBase(it) }
-
     }
 
     private fun getCallResponseFromWikipediaAPI(): Response<String> {
@@ -169,5 +168,6 @@ class OtherInfoWindow : AppCompatActivity() {
         var artistName: String?,
         var generalInformation: String?,
         var url: String?,
-        var existInDatabase: Boolean)
+        var existInDatabase: Boolean
+    )
 }
