@@ -51,21 +51,18 @@ class OtherInfoWindow : AppCompatActivity() {
         infoAboutArtist.artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
     }
     private fun setInfoAboutArtist() {
-        if (infoAboutArtist.artistName?.let { dataBase!!.getArtistInfo(it) } != null) {
-            infoAboutArtist.generalInformation =
-                infoAboutArtist.artistName?.let { dataBase!!.getArtistInfo(it) }
+        infoAboutArtist.generalInformation = infoAboutArtist.artistName?.let { dataBase!!.getArtistInfo(it) }
+        if (infoAboutArtist.generalInformation  != null) {
             infoAboutArtist.existInDatabase = true
         }
     }
 
-
-
     private fun getCallResponseFromWikipediaAPI(): Response<String> {
-            val retrofit = Retrofit.Builder()
-                                   .baseUrl(BASE_URL)
-                                   .addConverterFactory(ScalarsConverterFactory.create())
-                                   .build()
-            return retrofit.create(WikipediaAPI::class.java).getArtistInfo(infoAboutArtist.artistName).execute()
+        val retrofit = Retrofit.Builder()
+                               .baseUrl(BASE_URL)
+                               .addConverterFactory(ScalarsConverterFactory.create())
+                               .build()
+        return retrofit.create(WikipediaAPI::class.java).getArtistInfo(infoAboutArtist.artistName).execute()
     }
 
     private fun startMoreInfoArtist(){
@@ -75,11 +72,11 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun getArtistInfo() {
-        getArtistPageId()
+        setArtistPageId()
         if(infoAboutArtist.existInDatabase){
             addAsterisk()
         } else {
-            searchInfoArtist()
+            setInfoArtist()
         }
         setTextArtistInfo()
     }
@@ -111,11 +108,15 @@ class OtherInfoWindow : AppCompatActivity() {
         return getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["snippet"]
     }
 
-    private fun getArtistPageId(){
-        infoAboutArtist.url = BASE_WIKI_URL + getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"].toString()
+    private fun getArtistPageId() : JsonElement{
+        return getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"]
     }
 
-    private fun searchInfoArtist() {
+    private fun setArtistPageId(){
+        infoAboutArtist.url = BASE_WIKI_URL + getArtistPageId().toString()
+    }
+
+    private fun setInfoArtist() {
         infoAboutArtist.generalInformation = getArtistSnippet().asString.replace("\\n", "\n")
     }
 
@@ -135,11 +136,11 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun createImageMoreDetailsAboutArtistView() {
-            Picasso.get().load(IMAGE_URL).into(findViewById<View>(R.id.imageView) as ImageView)
+        Picasso.get().load(IMAGE_URL).into(findViewById<View>(R.id.imageView) as ImageView)
     }
 
     private fun createTextMoreDetailsAboutArtistView() {
-            textPaneWithArtistInformation!!.text = Html.fromHtml(infoAboutArtist.generalInformation)
+        textPaneWithArtistInformation!!.text = Html.fromHtml(infoAboutArtist.generalInformation)
     }
 
     companion object {
