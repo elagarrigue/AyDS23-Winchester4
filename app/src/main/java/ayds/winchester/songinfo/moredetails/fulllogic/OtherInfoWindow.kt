@@ -42,8 +42,15 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     private fun initInfoDataClass() {
-        infoAboutArtist.artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
+        setArtistName()
         setNoResults()
+        setInfoAboutArtist()
+    }
+
+    private fun setArtistName() {
+        infoAboutArtist.artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
+    }
+    private fun setInfoAboutArtist() {
         if (infoAboutArtist.artistName?.let { dataBase!!.getArtistInfo(it) } != null) {
             infoAboutArtist.generalInformation =
                 infoAboutArtist.artistName?.let { dataBase!!.getArtistInfo(it) }
