@@ -51,7 +51,7 @@ class OtherInfoWindow : AppCompatActivity() {
         infoAboutArtist.artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
     }
     private fun setInfoAboutArtist() {
-        infoAboutArtist.generalInformation = infoAboutArtist.artistName?.let { dataBase!!.getArtistInfo(it) }
+        infoAboutArtist.generalInformation = infoAboutArtist.artistName?.let { dataBase!!.getArtistInfoFromDataBase(it) }
         if (infoAboutArtist.generalInformation  != null) {
             infoAboutArtist.existInDatabase = true
         }
@@ -125,7 +125,6 @@ class OtherInfoWindow : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(infoAboutArtist.url))
             startActivity(intent)
         }
-
     }
 
     private fun createMoreDetailsAboutArtistView() {

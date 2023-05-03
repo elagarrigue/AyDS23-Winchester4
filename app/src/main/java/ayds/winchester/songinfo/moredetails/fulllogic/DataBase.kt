@@ -79,7 +79,7 @@ class DataBase(context: Context?) : SQLiteOpenHelper(context, NAMEDATABASE, null
         cursor.close()
     }
 
-    fun getArtistInfo( artist: String): String? {
+    fun getArtistInfoFromDataBase( artist: String): String? {
         val database = getDataBaseReadable()
         val cursor = createCursor(database, artist)
         val items: MutableList<String> = ArrayList()
