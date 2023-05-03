@@ -24,21 +24,13 @@ class OtherInfoWindow : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_other_info)
 
-        initAll()
-    }
-
-    private fun initAll() {
-        initContentView()
         initTextPaneArtist()
         initDataBase()
         initInfoDataClass()
         startMoreInfoArtist()
         setWikiUrlFromArtist()
-    }
-
-    private fun initContentView() {
-        setContentView(R.layout.activity_other_info)
     }
 
     private fun initTextPaneArtist() {
@@ -58,21 +50,11 @@ class OtherInfoWindow : AppCompatActivity() {
     private fun setArtistName() {
         infoAboutArtist.artistName = intent.getStringExtra(ARTIST_NAME_EXTRA)
     }
-
-    private fun setNoResults() {
-        infoAboutArtist.generalInformation = "No Results"
-    }
-
     private fun setInfoAboutArtist() {
-        setArtistGeneralInformation()
+        infoAboutArtist.generalInformation = infoAboutArtist.artistName?.let { dataBase!!.getArtistInfoFromDataBase(it) }
         if (infoAboutArtist.generalInformation  != null) {
             infoAboutArtist.existInDatabase = true
         }
-    }
-
-    private fun setArtistGeneralInformation() {
-        infoAboutArtist.generalInformation = infoAboutArtist.artistName?.let { dataBase!!.getArtistInfo(it) }
-
     }
 
     private fun getCallResponseFromWikipediaAPI(): Response<String> {
@@ -89,14 +71,6 @@ class OtherInfoWindow : AppCompatActivity() {
         }.start()
     }
 
-    private fun setWikiUrlFromArtist() {
-        findViewById<View>(R.id.openUrlButton).setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(infoAboutArtist.url))
-            startActivity(intent)
-        }
-
-    }
-
     private fun getArtistInfo() {
         setArtistPageId()
         if(infoAboutArtist.existInDatabase){
@@ -107,28 +81,8 @@ class OtherInfoWindow : AppCompatActivity() {
         setTextArtistInfo()
     }
 
-    private fun setArtistPageId(){
-        infoAboutArtist.url = BASE_WIKI_URL + getArtistPageId().toString()
-    }
-
-    private fun getArtistPageId() : JsonElement{
-        return getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"]
-    }
-
     private fun addAsterisk() {
-        infoAboutArtist.generalInformation = ASTERISK + infoAboutArtist.generalInformation
-    }
-
-    private fun setInfoArtist() {
-        infoAboutArtist.generalInformation = getArtistSnippet().asString.replace("\\n", "\n")
-    }
-
-    private fun getArtistSnippet() : JsonElement{
-        return getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["snippet"]
-    }
-
-    private fun getJsonQueryFromAPI(): JsonElement {
-        return Gson().fromJson(getCallResponseFromWikipediaAPI().body(), JsonObject::class.java).get("query")
+        infoAboutArtist.generalInformation = "[*]" + infoAboutArtist.generalInformation
     }
 
     private fun setTextArtistInfo() {
@@ -140,6 +94,37 @@ class OtherInfoWindow : AppCompatActivity() {
 
     private fun saveArtistInfo() {
         infoAboutArtist.artistName?.let { dataBase?.saveArtist(it, infoAboutArtist.generalInformation!!) }
+    }
+
+    private fun setNoResults() {
+        infoAboutArtist.generalInformation = "No Results"
+    }
+
+    private fun getJsonQueryFromAPI(): JsonElement {
+        return Gson().fromJson(getCallResponseFromWikipediaAPI().body(), JsonObject::class.java).get("query")
+    }
+
+    private fun getArtistSnippet() : JsonElement{
+        return getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["snippet"]
+    }
+
+    private fun getArtistPageId() : JsonElement{
+        return getJsonQueryFromAPI().asJsonObject["search"].asJsonArray[0].asJsonObject["pageid"]
+    }
+
+    private fun setArtistPageId(){
+        infoAboutArtist.url = BASE_WIKI_URL + getArtistPageId().toString()
+    }
+
+    private fun setInfoArtist() {
+        infoAboutArtist.generalInformation = getArtistSnippet().asString.replace("\\n", "\n")
+    }
+
+    private fun setWikiUrlFromArtist() {
+        findViewById<View>(R.id.openUrlButton).setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(infoAboutArtist.url))
+            startActivity(intent)
+        }
     }
 
     private fun createMoreDetailsAboutArtistView() {
@@ -162,12 +147,5 @@ class OtherInfoWindow : AppCompatActivity() {
         const val BASE_URL = "https://en.wikipedia.org/w/"
         const val IMAGE_URL = "https://upload.wikimedia.org/wikipedia/commons/8/8c/Wikipedia-logo-v2-es.png"
         const val BASE_WIKI_URL = "https://en.wikipedia.org/?curid="
-        const val ASTERISK ="[*]"
     }
-    
-    data class InfoAboutArtist(
-        var artistName: String?,
-        var generalInformation: String?,
-        var url: String?,
-        var existInDatabase: Boolean)
 }

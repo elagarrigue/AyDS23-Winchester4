@@ -5,5 +5,4 @@ data class InfoAboutArtist(
     var generalInformation: String?,
     var url: String?,
     var existInDatabase: Boolean) {
-
 }
