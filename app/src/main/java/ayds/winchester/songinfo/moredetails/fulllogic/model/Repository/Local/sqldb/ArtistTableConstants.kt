@@ -1,0 +1,15 @@
+package ayds.winchester.songinfo.moredetails.fulllogic.model.Repository.Local.sqldb
+
+const val ARTISTS_TABLE = "artists"
+const val ID_COLUMN="id"
+const val ARTIST_COLUMN="artist"
+const val INFO_COLUMN="info"
+const val WIKIPEDIA_URL_COLUMN="source"
+
+
+const val createArtistTable: String ="create table $ARTISTS_TABLE (" +
+         "$ID_COLUMN INTEGER PRIMARY KEY AUTOINCREMENT, " +
+         "$ARTIST_COLUMN string, " +
+         "$INFO_COLUMN string, " +
+         "$WIKIPEDIA_URL_COLUMN string)"
+
