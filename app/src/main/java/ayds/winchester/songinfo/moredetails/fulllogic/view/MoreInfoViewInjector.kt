@@ -1,7 +1,6 @@
 package ayds.winchester.songinfo.moredetails.fulllogic.view
 
-import ayds.winchester.songinfo.home.controller.HomeControllerInjector
-import ayds.winchester.songinfo.home.model.HomeModelInjector
+
 import ayds.winchester.songinfo.home.view.HomeView
 
 

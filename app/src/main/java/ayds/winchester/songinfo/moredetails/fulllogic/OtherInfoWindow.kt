@@ -157,17 +157,7 @@ class OtherInfoWindow : AppCompatActivity() {
     }
 
     companion object {
-        const val ARTIST_NAME_EXTRA = "artistName"
-        const val BASE_URL = "https://en.wikipedia.org/w/"
         const val IMAGE_URL = "https://upload.wikimedia.org/wikipedia/commons/8/8c/Wikipedia-logo-v2-es.png"
-        const val BASE_WIKI_URL = "https://en.wikipedia.org/?curid="
-        const val ASTERISK ="[*]"
     }
 
-    data class InfoAboutArtist(
-        var artistName: String?,
-        var generalInformation: String?,
-        var url: String?,
-        var existInDatabase: Boolean
-    )
 }

@@ -1,7 +1,7 @@
 package ayds.winchester.songinfo.moredetails.fulllogic.view
 
-import Artist
-import ayds.winchester.songinfo.home.model.entities.Song
+
+
 
 interface ArtistDescriptionHelper {
     fun getArtistDescriptionText(artist: Artist.ArtistInfo ): String
@@ -14,7 +14,7 @@ internal class ArtistDescriptionHelperImpl () : ArtistDescriptionHelper {
                 "${
                     if (artist.isLocallyStored) "[*]" else ""
                 }\n" +
-                    "Artist: ${artist.artistInfo}\n"
+                    " ${artist.artistInfo}\n"
 
             else -> ""
         }

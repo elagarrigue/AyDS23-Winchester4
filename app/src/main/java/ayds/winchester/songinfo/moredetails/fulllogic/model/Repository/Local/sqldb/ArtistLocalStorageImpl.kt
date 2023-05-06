@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import ayds.winchester.songinfo.home.model.repository.local.spotify.sqldb.SONGS_TABLE
 import ayds.winchester.songinfo.moredetails.fulllogic.model.Repository.Local.ArtistLocalStorage
 
 
@@ -42,6 +43,21 @@ class ArtistLocalStorageImpl (context: Context,
         val database = getDataBaseWritable()
         val values = createMapValues(artist)
         database.insert(ARTISTS_TABLE, null, values)
+    }
+
+    override fun getArtistById(id: String): Artist.ArtistInfo? {
+        val selectionArgs = arrayOf(id)
+        val selection = "$ID_COLUMN = ?"
+        val cursor = readableDatabase.query(
+            SONGS_TABLE,
+            projection,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
+        return cursorToArtistMapper.map(cursor)
     }
 
     private fun getDataBaseReadable(): SQLiteDatabase {
