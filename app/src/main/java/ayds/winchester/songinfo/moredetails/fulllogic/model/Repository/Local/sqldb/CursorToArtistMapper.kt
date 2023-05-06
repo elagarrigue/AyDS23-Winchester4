@@ -1,19 +1,20 @@
 package ayds.winchester.songinfo.moredetails.fulllogic.model.Repository.Local.sqldb
 
 import android.database.Cursor
+import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
 import java.sql.SQLException
 
 interface CursorToArtistMapper {
-    fun map(cursor: Cursor): Artist.ArtistInfo?
+    fun map(cursor: Cursor): ArtistInfo?
 }
 
 internal class CursorToArtistMapperImpl : CursorToArtistMapper {
 
-    override fun map(cursor: Cursor): Artist.ArtistInfo? =
+    override fun map(cursor: Cursor): ArtistInfo? =
         try {
             with(cursor) {
                 if (moveToNext()) {
-                    Artist.ArtistInfo(
+                    ArtistInfo(
                         id = getString(getColumnIndexOrThrow(ID_COLUMN)),
                         artistName = getString(getColumnIndexOrThrow(ARTIST_COLUMN)),
                         artistInfo = getString(getColumnIndexOrThrow(INFO_COLUMN)),

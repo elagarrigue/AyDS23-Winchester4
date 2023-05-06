@@ -1,6 +1,6 @@
 package ayds.winchester.songinfo.moredetails.fulllogic.model.Repository.Local.sqldb
 
-import Artist
+import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -27,7 +27,7 @@ class ArtistLocalStorageImpl (context: Context,
             createArtistTable
         )
     }
-    private fun createMapValues(artist:Artist.ArtistInfo): ContentValues {
+    private fun createMapValues(artist: ArtistInfo): ContentValues {
         val values = ContentValues()
         values.put(ARTIST_COLUMN, artist.artistName)
         values.put(INFO_COLUMN, artist.artistInfo)
@@ -39,13 +39,13 @@ class ArtistLocalStorageImpl (context: Context,
         return writableDatabase
     }
 
-    override fun saveArtist( artist:Artist.ArtistInfo) {
+    override fun saveArtist( artist: ArtistInfo) {
         val database = getDataBaseWritable()
         val values = createMapValues(artist)
         database.insert(ARTISTS_TABLE, null, values)
     }
 
-    override fun getArtistById(id: String): Artist.ArtistInfo? {
+    override fun getArtistById(id: String): ArtistInfo? {
         val selectionArgs = arrayOf(id)
         val selection = "$ID_COLUMN = ?"
         val cursor = readableDatabase.query(
@@ -64,7 +64,7 @@ class ArtistLocalStorageImpl (context: Context,
         return readableDatabase
     }
 
-    override fun getArtistInfoFromDataBase( artist: String): Artist.ArtistInfo? {
+    override fun getArtistInfoFromDataBase( artist: String): ArtistInfo? {
         val selection = "$ARTIST_COLUMN = ?"
         val selectionArgs = arrayOf(artist)
         val sortOrder = "$ARTIST_COLUMN DESC"

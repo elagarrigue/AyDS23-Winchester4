@@ -1,4 +1,4 @@
-
+package ayds.winchester.songinfo.moredetails.fulllogic.model.entities
 
 sealed class Artist {
 
@@ -8,6 +8,6 @@ sealed class Artist {
         var artistInfo: String,
         var wikipediaUrl: String,
         var isLocallyStored: Boolean = false
-    ):Artist()
+    ): Artist()
     object EmptyArtist : Artist()
 }

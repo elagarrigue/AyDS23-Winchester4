@@ -1,11 +1,12 @@
 package ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.wikipedia
 
+import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 
 
 interface WikipediaToArtistResolver {
-    fun getArtistFromExternalData(serviceData: String?): Artist.ArtistInfo?
+    fun getArtistFromExternalData(serviceData: String?): ArtistInfo?
 }
 
 private const val QUERY = "query"
@@ -17,10 +18,10 @@ private const val BASE_WIKI_URL = "https://en.wikipedia.org/?curid="
 
 internal class JsonToArtistResolver : WikipediaToArtistResolver{
 
-    override fun getArtistFromExternalData(serviceData: String?): Artist.ArtistInfo? =
+    override fun getArtistFromExternalData(serviceData: String?): ArtistInfo? =
         try {
             serviceData?.getFirstItem()?.let { item ->
-                Artist.ArtistInfo(
+                ArtistInfo(
                     item.getId(),
                     item.getArtistName(),
                     item.getArtistInfo(),

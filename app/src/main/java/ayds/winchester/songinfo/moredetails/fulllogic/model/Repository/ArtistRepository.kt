@@ -1,13 +1,14 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.model.Repository
+package ayds.winchester.songinfo.moredetails.fulllogic.model.repository
 
-import Artist
-import ayds.winchester.songinfo.home.model.entities.Song
+import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist
+import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
+import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.EmptyArtist
 import ayds.winchester.songinfo.home.model.repository.external.spotify.WikipediaService
 import ayds.winchester.songinfo.moredetails.fulllogic.model.Repository.Local.ArtistLocalStorage
 
 
  interface ArtistRepository {
-    fun getArtistByName( artist :Artist.ArtistInfo): Artist
+    fun getArtistByName( artist : ArtistInfo): Artist
     fun getArtistById(id: String): Artist
 }
 
@@ -16,7 +17,7 @@ internal class ArtistRepositoryImpl(
     private val artistTrackService: WikipediaService
 ) : ArtistRepository {
 
-    override fun getArtistByName(artist: Artist.ArtistInfo): Artist {
+    override fun getArtistByName(artist: ArtistInfo): Artist {
         var artistInfo = artistLocalStorage.getArtistInfoFromDataBase(artist.artistName)
 
         when {
@@ -34,16 +35,16 @@ internal class ArtistRepositoryImpl(
             }
         }
 
-        return artistInfo ?: Artist.EmptyArtist
+        return artistInfo ?: EmptyArtist
     }
 
     override fun getArtistById(id: String): Artist {
-        return artistLocalStorage.getArtistById(id) ?: Artist.EmptyArtist
+        return artistLocalStorage.getArtistById(id) ?: EmptyArtist
     }
 
-    private fun Artist.ArtistInfo.isSavedSong() = artistLocalStorage.getArtistById(id) != null
+    private fun ArtistInfo.isSavedSong() = artistLocalStorage.getArtistById(id) != null
 
-    private fun markArtistAsLocal(artist: Artist.ArtistInfo) {
+    private fun markArtistAsLocal(artist: ArtistInfo) {
         artist.isLocallyStored = true
     }
 }
