@@ -3,12 +3,12 @@ package ayds.winchester.songinfo.moredetails.fulllogic.model.repository
 import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist
 import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
 import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.EmptyArtist
-import ayds.winchester.songinfo.home.model.repository.external.spotify.WikipediaService
-import ayds.winchester.songinfo.moredetails.fulllogic.model.Repository.Local.ArtistLocalStorage
+import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.WikipediaService
+import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local.ArtistLocalStorage
 
 
  interface ArtistRepository {
-    fun getArtistByName( artist : ArtistInfo): Artist
+    fun getArtistByName(artistName: String): Artist
     fun getArtistById(id: String): Artist
 }
 
@@ -17,25 +17,25 @@ internal class ArtistRepositoryImpl(
     private val artistTrackService: WikipediaService
 ) : ArtistRepository {
 
-    override fun getArtistByName(artist: ArtistInfo): Artist {
-        var artistInfo = artistLocalStorage.getArtistInfoFromDataBase(artist.artistName)
+    override fun getArtistByName(artistName: String): Artist {
+        var artist = artistLocalStorage.getArtistInfoFromDataBase(artistName)
 
         when {
-            artistInfo != null -> markArtistAsLocal(artistInfo)
+            artist != null -> markArtistAsLocal(artist)
             else -> {
                 try {
-                    artistInfo = artistTrackService.getArtist(artist.artistName)
+                    artist = artistTrackService.getArtist(artistName)
 
-                    artistInfo?.let {
-                        artistLocalStorage.saveArtist(artist)
+                    artist?.let {
+                        artistLocalStorage.saveArtist(artist!!)
                     }
                 } catch (e: Exception) {
-                    artistInfo = null
+                    artist = null
                 }
             }
         }
 
-        return artistInfo ?: EmptyArtist
+        return artist ?: EmptyArtist
     }
 
     override fun getArtistById(id: String): Artist {

@@ -1,4 +1,4 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.model.Repository.Local.sqldb
+package ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local.sqldb
 
 import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
 import android.content.ContentValues
@@ -6,7 +6,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import ayds.winchester.songinfo.home.model.repository.local.spotify.sqldb.SONGS_TABLE
-import ayds.winchester.songinfo.moredetails.fulllogic.model.Repository.Local.ArtistLocalStorage
+import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local.ArtistLocalStorage
 
 
 private const val DATABASE_VERSION = 1

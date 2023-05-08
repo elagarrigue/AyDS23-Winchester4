@@ -1,7 +1,6 @@
 package ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.wikipedia
 
-import WikipediaServiceImpl
-import ayds.winchester.songinfo.home.model.repository.external.spotify.WikipediaService
+import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.WikipediaService
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 

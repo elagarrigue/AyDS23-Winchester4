@@ -1,4 +1,4 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.model.Repository.Local
+package ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local
 
 import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
 

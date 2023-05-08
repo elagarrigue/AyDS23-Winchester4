@@ -1,8 +1,8 @@
+package ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.wikipedia
 
-import ayds.winchester.songinfo.home.model.repository.external.spotify.WikipediaService
+
+import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.WikipediaService
 import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
-import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.wikipedia.WikipediaAPI
-import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.wikipedia.WikipediaToArtistResolver
 import retrofit2.Response
 
 internal class WikipediaServiceImpl(

@@ -1,4 +1,4 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.model.Repository.Local.sqldb
+package ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local.sqldb
 
 import android.database.Cursor
 import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo

@@ -1,4 +1,4 @@
-package ayds.winchester.songinfo.home.model.repository.external.spotify
+package ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external
 
 import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
 

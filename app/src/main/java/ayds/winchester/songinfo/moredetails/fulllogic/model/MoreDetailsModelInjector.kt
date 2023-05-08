@@ -2,10 +2,10 @@ package ayds.winchester.songinfo.moredetails.fulllogic.model
 
 
 import android.content.Context
-import ayds.winchester.songinfo.home.model.repository.external.spotify.WikipediaService
-import ayds.winchester.songinfo.moredetails.fulllogic.model.Repository.Local.ArtistLocalStorage
-import ayds.winchester.songinfo.moredetails.fulllogic.model.Repository.Local.sqldb.ArtistLocalStorageImpl
-import ayds.winchester.songinfo.moredetails.fulllogic.model.Repository.Local.sqldb.CursorToArtistMapperImpl
+import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.WikipediaService
+import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local.ArtistLocalStorage
+import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local.sqldb.ArtistLocalStorageImpl
+import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local.sqldb.CursorToArtistMapperImpl
 import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.WikipediaInjector
 import ayds.winchester.songinfo.moredetails.fulllogic.view.MoreDetailsView
 import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.ArtistRepository
