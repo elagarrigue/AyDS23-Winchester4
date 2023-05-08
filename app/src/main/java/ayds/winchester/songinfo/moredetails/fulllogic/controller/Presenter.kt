@@ -2,6 +2,7 @@ package ayds.winchester.songinfo.moredetails.fulllogic.controller
 
 import ayds.observer.Observer
 import ayds.winchester.songinfo.moredetails.fulllogic.model.MoreDetailsModel
+import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist
 import ayds.winchester.songinfo.moredetails.fulllogic.view.MoreDetailsUiEvent
 import ayds.winchester.songinfo.moredetails.fulllogic.view.MoreDetailsView
 
@@ -16,6 +17,7 @@ internal class PresenterImpl(
 ) : Presenter {
 
     private lateinit var moreDetailsView: MoreDetailsView
+    private lateinit var artist: Artist.ArtistInfo
 
     override fun setMoreDetailsView(moreDetailsView: MoreDetailsView) {
         this.moreDetailsView = moreDetailsView
@@ -31,10 +33,12 @@ internal class PresenterImpl(
 
 
 
-    private fun searchArtist() {
+    private fun showMoreDetailsInformation() {
         //busca en el modelo
+        moreDetailsModel.searchArtist(artist.artistName)
 
         //usa private fun updateArtistInfo(artist: Artist)
+        moreDetailsView.showMoreDetails(artist.artistName)
     }
 
     private fun openSongUrl() {
