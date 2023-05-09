@@ -5,7 +5,7 @@ import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.
 import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
 import retrofit2.Response
 
-internal class WikipediaServiceImpl(
+class WikipediaServiceImpl(
     private val wikipediaAPI: WikipediaAPI,
     private val wikipediaToArtistResolver: WikipediaToArtistResolver,
 ) : WikipediaService {

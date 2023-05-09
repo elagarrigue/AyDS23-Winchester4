@@ -1,9 +1,8 @@
 package ayds.winchester.songinfo.moredetails.fulllogic.model
 
-
-import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist
 import ayds.observer.Observable
 import ayds.observer.Subject
+import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist
 import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.ArtistRepository
 
 interface  MoreDetailsModel {
@@ -12,7 +11,6 @@ interface  MoreDetailsModel {
 
     fun searchArtist(artistName: String)
 
-    fun getArtistById(id: String): Artist
 }
 
 internal class MoreDetailsModelImpl(private val repository: ArtistRepository) : MoreDetailsModel {
@@ -24,6 +22,4 @@ internal class MoreDetailsModelImpl(private val repository: ArtistRepository) : 
             artistObservable.notify(it)
         }
     }
-
-    override fun getArtistById(id: String): Artist = repository.getArtistById(id)
 }

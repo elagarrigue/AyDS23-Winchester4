@@ -18,7 +18,6 @@ import ayds.winchester.songinfo.home.model.entities.Song.EmptySong
 import ayds.winchester.songinfo.home.model.entities.Song
 import ayds.winchester.songinfo.home.model.entities.Song.SpotifySong
 import ayds.winchester.songinfo.home.view.HomeUiState.Companion.DEFAULT_IMAGE
-import ayds.winchester.songinfo.moredetails.fulllogic.OtherInfoWindow
 import ayds.winchester.songinfo.moredetails.fulllogic.view.MoreDetailsViewActivity
 import ayds.winchester.songinfo.utils.UtilsInjector
 import ayds.winchester.songinfo.utils.navigation.NavigationUtils
@@ -51,7 +50,7 @@ class HomeViewActivity : AppCompatActivity(), HomeView {
     override var uiState: HomeUiState = HomeUiState()
 
     override fun navigateToOtherDetails(artistName: String) {
-        val intent = Intent(this, OtherInfoWindow::class.java)
+        val intent = Intent(this, MoreDetailsViewActivity::class.java)
         intent.putExtra(MoreDetailsViewActivity.ARTIST_NAME_EXTRA, artistName)
         startActivity(intent)
     }

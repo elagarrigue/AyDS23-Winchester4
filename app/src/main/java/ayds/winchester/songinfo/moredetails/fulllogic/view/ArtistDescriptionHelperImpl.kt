@@ -8,7 +8,7 @@ interface ArtistDescriptionHelper {
     fun getArtistDescriptionText(artist: Artist ): String
 }
 
-internal class ArtistDescriptionHelperImpl () : ArtistDescriptionHelper {
+ class ArtistDescriptionHelperImpl : ArtistDescriptionHelper {
     override fun getArtistDescriptionText(artist: Artist): String {
         return when (artist) {
             is ArtistInfo ->
@@ -16,8 +16,7 @@ internal class ArtistDescriptionHelperImpl () : ArtistDescriptionHelper {
                     if (artist.isLocallyStored) "[*]" else ""
                 }\n" +
                     " ${artist.artistInfo}\n"
-
-            else -> ""
+            else -> "No results"
         }
     }
 }

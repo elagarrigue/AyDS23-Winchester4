@@ -6,15 +6,13 @@ import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.Empt
 import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.WikipediaService
 import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local.ArtistLocalStorage
 
-
- interface ArtistRepository {
+interface ArtistRepository {
     fun getArtistByName(artistName: String): Artist
-    fun getArtistById(id: String): Artist
 }
 
-internal class ArtistRepositoryImpl(
-    private val artistLocalStorage: ArtistLocalStorage,
-    private val artistTrackService: WikipediaService
+ class ArtistRepositoryImpl(
+     private val artistLocalStorage: ArtistLocalStorage,
+     private val artistWikipediaService: WikipediaService
 ) : ArtistRepository {
 
     override fun getArtistByName(artistName: String): Artist {
@@ -24,10 +22,9 @@ internal class ArtistRepositoryImpl(
             artist != null -> markArtistAsLocal(artist)
             else -> {
                 try {
-                    artist = artistTrackService.getArtist(artistName)
-
-                    artist?.let {
-                        artistLocalStorage.saveArtist(artist!!)
+                    artist = artistWikipediaService.getArtist(artistName)
+                    if (artist != null) {
+                        saveArtist(artist)
                     }
                 } catch (e: Exception) {
                     artist = null
@@ -38,11 +35,12 @@ internal class ArtistRepositoryImpl(
         return artist ?: EmptyArtist
     }
 
-    override fun getArtistById(id: String): Artist {
-        return artistLocalStorage.getArtistById(id) ?: EmptyArtist
-    }
+    private fun saveArtist(artist : ArtistInfo){
 
-    private fun ArtistInfo.isSavedSong() = artistLocalStorage.getArtistById(id) != null
+        artist.let {
+            artistLocalStorage.saveArtist(artist)
+        }
+    }
 
     private fun markArtistAsLocal(artist: ArtistInfo) {
         artist.isLocallyStored = true

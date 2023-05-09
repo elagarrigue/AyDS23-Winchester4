@@ -1,6 +1,7 @@
 package ayds.winchester.songinfo.moredetails.fulllogic.view
 
 import ayds.winchester.songinfo.moredetails.fulllogic.model.MoreDetailsModelInjector
+import ayds.winchester.songinfo.moredetails.fulllogic.presenter.MoreDetailsPresenterInjector
 
 object MoreDetailsViewInjector {
 
@@ -8,6 +9,6 @@ object MoreDetailsViewInjector {
 
     fun init(moreDetailsView: MoreDetailsView) {
         MoreDetailsModelInjector.initMoreDetailsModel(moreDetailsView)
-        MoreDetailsControllerInjector.onViewStarted(moreDetailsView)
+        MoreDetailsPresenterInjector.onViewStarted(moreDetailsView)
     }
 }
