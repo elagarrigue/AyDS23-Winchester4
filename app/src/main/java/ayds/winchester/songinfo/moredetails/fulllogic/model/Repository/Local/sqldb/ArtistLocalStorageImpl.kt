@@ -5,7 +5,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import ayds.winchester.songinfo.home.model.repository.local.spotify.sqldb.SONGS_TABLE
 import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local.ArtistLocalStorage
 
 
@@ -17,7 +16,6 @@ class ArtistLocalStorageImpl (context: Context,
 ) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),
     ArtistLocalStorage {
     private val projection = arrayOf(
-        ID_COLUMN,
         ARTIST_COLUMN,
         INFO_COLUMN,
         WIKIPEDIA_URL_COLUMN
@@ -27,6 +25,8 @@ class ArtistLocalStorageImpl (context: Context,
             createArtistTable
         )
     }
+
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
     private fun createMapValues(artist: ArtistInfo): ContentValues {
         val values = ContentValues()
         values.put(ARTIST_COLUMN, artist.artistName)
@@ -45,28 +45,13 @@ class ArtistLocalStorageImpl (context: Context,
         database.insert(ARTISTS_TABLE, null, values)
     }
 
-    override fun getArtistById(id: String): ArtistInfo? {
-        val selectionArgs = arrayOf(id)
-        val selection = "$ID_COLUMN = ?"
-        val cursor = readableDatabase.query(
-            SONGS_TABLE,
-            projection,
-            selection,
-            selectionArgs,
-            null,
-            null,
-            null
-        )
-        return cursorToArtistMapper.map(cursor)
-    }
-
     private fun getDataBaseReadable(): SQLiteDatabase {
         return readableDatabase
     }
 
-    override fun getArtistInfoFromDataBase( artist: String): ArtistInfo? {
+    override fun getArtistInfoFromDataBase( artistName: String): ArtistInfo? {
         val selection = "$ARTIST_COLUMN = ?"
-        val selectionArgs = arrayOf(artist)
+        val selectionArgs = arrayOf(artistName)
         val sortOrder = "$ARTIST_COLUMN DESC"
         val cursor = getDataBaseReadable().query(
             ARTISTS_TABLE,
@@ -80,5 +65,4 @@ class ArtistLocalStorageImpl (context: Context,
 
         return cursorToArtistMapper.map(cursor)
     }
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
 }

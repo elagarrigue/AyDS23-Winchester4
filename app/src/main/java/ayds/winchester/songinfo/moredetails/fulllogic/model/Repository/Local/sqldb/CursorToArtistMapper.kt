@@ -8,14 +8,13 @@ interface CursorToArtistMapper {
     fun map(cursor: Cursor): ArtistInfo?
 }
 
-internal class CursorToArtistMapperImpl : CursorToArtistMapper {
+class CursorToArtistMapperImpl : CursorToArtistMapper {
 
     override fun map(cursor: Cursor): ArtistInfo? =
         try {
             with(cursor) {
                 if (moveToNext()) {
                     ArtistInfo(
-                        id = getString(getColumnIndexOrThrow(ID_COLUMN)),
                         artistName = getString(getColumnIndexOrThrow(ARTIST_COLUMN)),
                         artistInfo = getString(getColumnIndexOrThrow(INFO_COLUMN)),
                         wikipediaUrl = getString(getColumnIndexOrThrow(WIKIPEDIA_URL_COLUMN))
