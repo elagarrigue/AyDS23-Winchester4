@@ -9,8 +9,7 @@ import ayds.observer.Observable
 import ayds.observer.Observer
 import ayds.observer.Subject
 import ayds.winchester.songinfo.R
-import ayds.winchester.songinfo.moredetails.dependencyinjector.MoreDetailsPresenterInjector
-import ayds.winchester.songinfo.moredetails.dependencyinjector.MoreDetailsViewInjector
+import ayds.winchester.songinfo.moredetails.dependencyinjector.MoreDetailsInjector
 import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenter
 import ayds.winchester.songinfo.utils.UtilsInjector
 import ayds.winchester.songinfo.utils.UtilsInjector.imageLoader
@@ -28,7 +27,7 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     private lateinit var wikipediaUrlButton: Button
     private lateinit var wikipediaImageView: ImageView
 
-    override val uiState: MoreDetailsUiState = MoreDetailsUiState()
+    override var uiState: MoreDetailsUiState = MoreDetailsUiState()
     private val onActionSubject = Subject<MoreDetailsUiEvent>()
     override val uiEventObservable: Observable<MoreDetailsUiEvent> = onActionSubject
     private val navigationUtils: NavigationUtils = UtilsInjector.navigationUtils
@@ -36,35 +35,32 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     private lateinit var artistName: String
 
 
-    override fun openExternalLink(url: String) {
-        navigationUtils.openExternalUrl(this, url)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initAll()
     }
 
-    private fun initAll(){
-        initModule()
+    private fun initAll() {
         initArtistName()
+        initModule()
+        initmoreDetailsPresenter()
         initProperties()
         initListeners()
-        notifySearchAction()
-        setMoreDetailsView()
+        searchArtist()
+        setEventObservable()
     }
 
     private fun initArtistName() {
         artistName = intent.getStringExtra(ARTIST_NAME_EXTRA).toString()
     }
 
-    private fun notifySearchAction() {
-        onActionSubject.notify(MoreDetailsUiEvent.SearchArtist)
+    private fun initModule() {
+        MoreDetailsInjector.initOnViewStarted(this)
     }
 
-    private fun initModule() {
-        MoreDetailsViewInjector.init(this)
-        moreDetailsPresenter = MoreDetailsPresenterInjector.getMoreDetailsPresenter()
+    private fun initmoreDetailsPresenter() {
+        moreDetailsPresenter = MoreDetailsInjector.getMoreDetailsPresenter()
+
     }
 
     private fun initProperties() {
@@ -77,10 +73,28 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     private fun initListeners() {
         wikipediaUrlButton.setOnClickListener { notifyOpenArtistAction() }
     }
+
     private fun notifyOpenArtistAction() {
         onActionSubject.notify(MoreDetailsUiEvent.OpenArtistUrl)
     }
 
+    private fun searchArtist() {
+        // Warning: Never use Thread in android! Use coroutines
+        Thread {
+            setArtistInfo()
+        }.start()
+    }
+
+    private fun setArtistInfo(){
+        moreDetailsPresenter.searchArtist(artistName)
+        getUiState()
+        updateArtistInfo()
+        updateImage()
+    }
+
+    private fun getUiState(){
+        uiState = moreDetailsPresenter.getUiState()
+    }
 
     private fun updateArtistInfo() {
         runOnUiThread {
@@ -94,29 +108,23 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
         }
     }
 
-    private fun setMoreDetailsView() {
+    private fun setEventObservable() {
         uiEventObservable.subscribe(observer)
     }
 
     private val observer: Observer<MoreDetailsUiEvent> =
         Observer { value ->
             when (value) {
-                MoreDetailsUiEvent.SearchArtist -> searchArtist()
                 MoreDetailsUiEvent.OpenArtistUrl -> openArtistUrl()
             }
         }
 
-    private fun searchArtist() {
-        // Warning: Never use Thread in android! Use coroutines
-        Thread {
-            moreDetailsPresenter.searchArtist(artistName)
-        }.start()
-        updateArtistInfo()
-        updateImage()
-    }
-
     private fun openArtistUrl() {
         openExternalLink(uiState.artistUrl)
+    }
+
+    override fun openExternalLink(url: String) {
+        navigationUtils.openExternalUrl(this, url)
     }
 
     companion object {
