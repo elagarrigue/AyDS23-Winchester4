@@ -1,7 +1,6 @@
 package ayds.winchester.songinfo.moredetails.presentation.view
 
 data class MoreDetailsUiState(
-    val artistName: String = "",
     val artistImageUrl: String = DEFAULT_IMAGE,
     val artistInfo: String = "",
     val artistUrl: String = "",

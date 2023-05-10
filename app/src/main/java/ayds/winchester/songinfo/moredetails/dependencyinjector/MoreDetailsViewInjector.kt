@@ -9,7 +9,6 @@ object MoreDetailsViewInjector {
     val artistDescriptionHelper: ArtistDescriptionHelper = ArtistDescriptionHelperImpl()
 
     fun init(moreDetailsView: MoreDetailsView) {
-        MoreDetailsModelInjector.initMoreDetailsModel(moreDetailsView)
         MoreDetailsPresenterInjector.onViewStarted(moreDetailsView)
     }
 }

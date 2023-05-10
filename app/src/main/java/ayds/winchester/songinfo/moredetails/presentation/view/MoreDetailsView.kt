@@ -1,20 +1,17 @@
 package ayds.winchester.songinfo.moredetails.presentation.view
 
 import android.os.Bundle
-import android.text.Html
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import ayds.observer.Observable
+import ayds.observer.Observer
 import ayds.observer.Subject
 import ayds.winchester.songinfo.R
+import ayds.winchester.songinfo.moredetails.dependencyinjector.MoreDetailsPresenterInjector
 import ayds.winchester.songinfo.moredetails.dependencyinjector.MoreDetailsViewInjector
-import ayds.winchester.songinfo.moredetails.domain.MoreDetailsModel
-import ayds.winchester.songinfo.moredetails.dependencyinjector.MoreDetailsModelInjector
-import ayds.winchester.songinfo.moredetails.domain.entities.Artist
-import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
-import ayds.winchester.songinfo.moredetails.domain.entities.Artist.EmptyArtist
+import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenter
 import ayds.winchester.songinfo.utils.UtilsInjector
 import ayds.winchester.songinfo.utils.UtilsInjector.imageLoader
 import ayds.winchester.songinfo.utils.navigation.NavigationUtils
@@ -22,7 +19,6 @@ import ayds.winchester.songinfo.utils.navigation.NavigationUtils
 interface MoreDetailsView {
     val uiEventObservable: Observable<MoreDetailsUiEvent>
     val uiState: MoreDetailsUiState
-
     fun openExternalLink(url: String)
 
 }
@@ -32,13 +28,12 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     private lateinit var wikipediaUrlButton: Button
     private lateinit var wikipediaImageView: ImageView
 
+    override val uiState: MoreDetailsUiState = MoreDetailsUiState()
     private val onActionSubject = Subject<MoreDetailsUiEvent>()
     override val uiEventObservable: Observable<MoreDetailsUiEvent> = onActionSubject
     private val navigationUtils: NavigationUtils = UtilsInjector.navigationUtils
-    override var uiState: MoreDetailsUiState = MoreDetailsUiState()
-    private lateinit var moreDetailsModel: MoreDetailsModel
-    private val artistDescriptionHelper: ArtistDescriptionHelper =
-        MoreDetailsViewInjector.artistDescriptionHelper
+    private lateinit var moreDetailsPresenter: MoreDetailsPresenter
+    private lateinit var artistName: String
 
 
     override fun openExternalLink(url: String) {
@@ -52,15 +47,15 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
 
     private fun initAll(){
         initModule()
+        initArtistName()
         initProperties()
         initListeners()
-        initObservers()
-        setArtistName()
         notifySearchAction()
+        setMoreDetailsView()
     }
 
-    private fun setArtistName() {
-        uiState = uiState.copy( artistName = intent.getStringExtra(ARTIST_NAME_EXTRA).toString())
+    private fun initArtistName() {
+        artistName = intent.getStringExtra(ARTIST_NAME_EXTRA).toString()
     }
 
     private fun notifySearchAction() {
@@ -69,7 +64,7 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
 
     private fun initModule() {
         MoreDetailsViewInjector.init(this)
-        moreDetailsModel = MoreDetailsModelInjector.getMoreDetailsModel()
+        moreDetailsPresenter = MoreDetailsPresenterInjector.getMoreDetailsPresenter()
     }
 
     private fun initProperties() {
@@ -86,41 +81,10 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
         onActionSubject.notify(MoreDetailsUiEvent.OpenArtistUrl)
     }
 
-    private fun initObservers() {
-        moreDetailsModel.artistObservable
-            .subscribe { value -> updateArtistInfo(value) }
-    }
 
-
-    private fun updateArtistInfo(artist: Artist) {
-        updateUiState(artist)
-        updateArtistInfo()
-        updateImage()
-    }
-
-    private fun updateUiState(artist: Artist) {
-        when (artist) {
-            is ArtistInfo -> updateArtistUiState(artist)
-            EmptyArtist -> noUpdateArtistUiState()
-        }
-    }
-    private fun updateArtistUiState(artist: ArtistInfo) {
-        uiState = uiState.copy(
-            artistImageUrl = MoreDetailsUiState.DEFAULT_IMAGE,
-            artistInfo = artistDescriptionHelper.getArtistDescriptionText(artist),
-            artistUrl = artist.wikipediaUrl,
-        )
-    }
-    private fun noUpdateArtistUiState() {
-        uiState = uiState.copy(
-            artistImageUrl = MoreDetailsUiState.DEFAULT_IMAGE,
-            artistInfo = artistDescriptionHelper.getArtistDescriptionText(EmptyArtist),
-            artistUrl = "",
-        )
-    }
     private fun updateArtistInfo() {
         runOnUiThread {
-            artistInfoTextView.text = Html.fromHtml(uiState.artistInfo)
+            artistInfoTextView.text = uiState.artistInfo
         }
     }
 
@@ -130,6 +94,30 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
         }
     }
 
+    private fun setMoreDetailsView() {
+        uiEventObservable.subscribe(observer)
+    }
+
+    private val observer: Observer<MoreDetailsUiEvent> =
+        Observer { value ->
+            when (value) {
+                MoreDetailsUiEvent.SearchArtist -> searchArtist()
+                MoreDetailsUiEvent.OpenArtistUrl -> openArtistUrl()
+            }
+        }
+
+    private fun searchArtist() {
+        // Warning: Never use Thread in android! Use coroutines
+        Thread {
+            moreDetailsPresenter.searchArtist(artistName)
+        }.start()
+        updateArtistInfo()
+        updateImage()
+    }
+
+    private fun openArtistUrl() {
+        openExternalLink(uiState.artistUrl)
+    }
 
     companion object {
         const val ARTIST_NAME_EXTRA = "artistName"
