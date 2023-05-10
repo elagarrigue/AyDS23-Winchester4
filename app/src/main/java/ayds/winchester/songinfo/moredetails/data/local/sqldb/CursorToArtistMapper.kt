@@ -1,7 +1,7 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local.sqldb
+package ayds.winchester.songinfo.moredetails.data.local.sqldb
 
 import android.database.Cursor
-import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
+import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
 import java.sql.SQLException
 
 interface CursorToArtistMapper {

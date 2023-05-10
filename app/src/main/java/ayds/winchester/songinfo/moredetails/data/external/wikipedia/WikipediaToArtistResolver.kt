@@ -1,6 +1,6 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.wikipedia
+package ayds.winchester.songinfo.moredetails.data.external.wikipedia
 
-import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
+import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 
@@ -17,7 +17,7 @@ private const val NAME = "title"
 private const val BASE_WIKI_URL = "https://en.wikipedia.org/?curid="
 
 
-class JsonToArtistResolver : WikipediaToArtistResolver{
+class JsonToArtistResolver : WikipediaToArtistResolver {
 
     override fun getArtistFromExternalData(serviceData: String?): ArtistInfo? =
         try {

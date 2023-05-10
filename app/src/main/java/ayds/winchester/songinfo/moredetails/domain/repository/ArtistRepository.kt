@@ -1,10 +1,10 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.model.repository
+package ayds.winchester.songinfo.moredetails.domain.repository
 
-import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist
-import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
-import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.EmptyArtist
-import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.WikipediaService
-import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local.ArtistLocalStorage
+import ayds.winchester.songinfo.moredetails.domain.entities.Artist
+import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
+import ayds.winchester.songinfo.moredetails.domain.entities.Artist.EmptyArtist
+import ayds.winchester.songinfo.moredetails.data.external.WikipediaService
+import ayds.winchester.songinfo.moredetails.data.local.ArtistLocalStorage
 
 interface ArtistRepository {
     fun getArtistByName(artistName: String): Artist

@@ -1,11 +1,11 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.view
+package ayds.winchester.songinfo.moredetails.presentation.view
 
-import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist
-import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
+import ayds.winchester.songinfo.moredetails.domain.entities.Artist
+import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
 
 
 interface ArtistDescriptionHelper {
-    fun getArtistDescriptionText(artist: Artist ): String
+    fun getArtistDescriptionText(artist: Artist): String
 }
 
  class ArtistDescriptionHelperImpl : ArtistDescriptionHelper {

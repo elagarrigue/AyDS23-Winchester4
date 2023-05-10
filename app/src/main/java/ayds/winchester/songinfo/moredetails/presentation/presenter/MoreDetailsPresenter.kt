@@ -1,9 +1,9 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.presenter
+package ayds.winchester.songinfo.moredetails.presentation.presenter
 
 import ayds.observer.Observer
-import ayds.winchester.songinfo.moredetails.fulllogic.model.MoreDetailsModel
-import ayds.winchester.songinfo.moredetails.fulllogic.view.MoreDetailsUiEvent
-import ayds.winchester.songinfo.moredetails.fulllogic.view.MoreDetailsView
+import ayds.winchester.songinfo.moredetails.domain.MoreDetailsModel
+import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsUiEvent
+import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsView
 
 interface MoreDetailsPresenter {
     fun setMoreDetailsView(moreDetailsView: MoreDetailsView)

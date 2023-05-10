@@ -1,4 +1,4 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.model.entities
+package ayds.winchester.songinfo.moredetails.domain.entities
 
 sealed class Artist {
 

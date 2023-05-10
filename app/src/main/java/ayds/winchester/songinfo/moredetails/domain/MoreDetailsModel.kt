@@ -1,9 +1,9 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.model
+package ayds.winchester.songinfo.moredetails.domain
 
 import ayds.observer.Observable
 import ayds.observer.Subject
-import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist
-import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.ArtistRepository
+import ayds.winchester.songinfo.moredetails.domain.entities.Artist
+import ayds.winchester.songinfo.moredetails.domain.repository.ArtistRepository
 
 interface  MoreDetailsModel {
 

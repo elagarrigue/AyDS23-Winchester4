@@ -1,11 +1,11 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local.sqldb
+package ayds.winchester.songinfo.moredetails.data.local.sqldb
 
-import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
+import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.local.ArtistLocalStorage
+import ayds.winchester.songinfo.moredetails.data.local.ArtistLocalStorage
 
 
 private const val DATABASE_VERSION = 1

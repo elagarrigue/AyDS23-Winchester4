@@ -1,7 +1,7 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.presenter
+package ayds.winchester.songinfo.moredetails.presentation.presenter
 
-import ayds.winchester.songinfo.moredetails.fulllogic.model.MoreDetailsModelInjector
-import ayds.winchester.songinfo.moredetails.fulllogic.view.MoreDetailsView
+import ayds.winchester.songinfo.moredetails.domain.MoreDetailsModelInjector
+import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsView
 
 object MoreDetailsPresenterInjector {
 

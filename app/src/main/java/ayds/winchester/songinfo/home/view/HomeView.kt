@@ -18,7 +18,7 @@ import ayds.winchester.songinfo.home.model.entities.Song.EmptySong
 import ayds.winchester.songinfo.home.model.entities.Song
 import ayds.winchester.songinfo.home.model.entities.Song.SpotifySong
 import ayds.winchester.songinfo.home.view.HomeUiState.Companion.DEFAULT_IMAGE
-import ayds.winchester.songinfo.moredetails.fulllogic.view.MoreDetailsViewActivity
+import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsViewActivity
 import ayds.winchester.songinfo.utils.UtilsInjector
 import ayds.winchester.songinfo.utils.navigation.NavigationUtils
 import ayds.winchester.songinfo.utils.view.ImageLoader

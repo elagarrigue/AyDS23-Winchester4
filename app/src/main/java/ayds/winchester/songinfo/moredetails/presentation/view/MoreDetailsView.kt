@@ -1,4 +1,4 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.view
+package ayds.winchester.songinfo.moredetails.presentation.view
 
 import android.os.Bundle
 import android.text.Html
@@ -9,11 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import ayds.observer.Observable
 import ayds.observer.Subject
 import ayds.winchester.songinfo.R
-import ayds.winchester.songinfo.moredetails.fulllogic.model.MoreDetailsModel
-import ayds.winchester.songinfo.moredetails.fulllogic.model.MoreDetailsModelInjector
-import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist
-import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.ArtistInfo
-import ayds.winchester.songinfo.moredetails.fulllogic.model.entities.Artist.EmptyArtist
+import ayds.winchester.songinfo.moredetails.domain.MoreDetailsModel
+import ayds.winchester.songinfo.moredetails.domain.MoreDetailsModelInjector
+import ayds.winchester.songinfo.moredetails.domain.entities.Artist
+import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
+import ayds.winchester.songinfo.moredetails.domain.entities.Artist.EmptyArtist
 import ayds.winchester.songinfo.utils.UtilsInjector
 import ayds.winchester.songinfo.utils.UtilsInjector.imageLoader
 import ayds.winchester.songinfo.utils.navigation.NavigationUtils
@@ -36,7 +36,8 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     private val navigationUtils: NavigationUtils = UtilsInjector.navigationUtils
     override var uiState: MoreDetailsUiState = MoreDetailsUiState()
     private lateinit var moreDetailsModel: MoreDetailsModel
-    private val artistDescriptionHelper: ArtistDescriptionHelper = MoreDetailsViewInjector.artistDescriptionHelper
+    private val artistDescriptionHelper: ArtistDescriptionHelper =
+        MoreDetailsViewInjector.artistDescriptionHelper
 
 
     override fun openExternalLink(url: String) {

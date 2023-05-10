@@ -1,4 +1,4 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.view
+package ayds.winchester.songinfo.moredetails.presentation.view
 
 data class MoreDetailsUiState(
     val artistName: String = "",

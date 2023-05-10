@@ -1,4 +1,4 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.wikipedia;
+package ayds.winchester.songinfo.moredetails.data.external.wikipedia;
 
 
 import retrofit2.Call;

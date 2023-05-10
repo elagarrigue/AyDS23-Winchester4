@@ -1,6 +1,6 @@
-package ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.wikipedia
+package ayds.winchester.songinfo.moredetails.data.external.wikipedia
 
-import ayds.winchester.songinfo.moredetails.fulllogic.model.repository.external.WikipediaService
+import ayds.winchester.songinfo.moredetails.data.external.WikipediaService
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
