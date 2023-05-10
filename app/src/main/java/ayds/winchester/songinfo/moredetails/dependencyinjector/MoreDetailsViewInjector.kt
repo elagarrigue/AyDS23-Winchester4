@@ -1,7 +1,5 @@
-package ayds.winchester.songinfo.moredetails.presentation.view
+package ayds.winchester.songinfo.moredetails.dependencyinjector
 
-import ayds.winchester.songinfo.moredetails.domain.MoreDetailsModelInjector
-import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenterInjector
 import ayds.winchester.songinfo.moredetails.presentation.view.ArtistDescriptionHelper
 import ayds.winchester.songinfo.moredetails.presentation.view.ArtistDescriptionHelperImpl
 import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsView

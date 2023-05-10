@@ -1,7 +1,6 @@
-package ayds.winchester.songinfo.moredetails.data.external
+package ayds.winchester.songinfo.moredetails.dependencyinjector
 
 import ayds.winchester.songinfo.moredetails.data.external.WikipediaService
-import ayds.winchester.songinfo.moredetails.data.external.wikipedia.WikipediaQueryInjector
 
 object WikipediaInjector {
 

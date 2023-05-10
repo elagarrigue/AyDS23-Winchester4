@@ -9,8 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import ayds.observer.Observable
 import ayds.observer.Subject
 import ayds.winchester.songinfo.R
+import ayds.winchester.songinfo.moredetails.dependencyinjector.MoreDetailsViewInjector
 import ayds.winchester.songinfo.moredetails.domain.MoreDetailsModel
-import ayds.winchester.songinfo.moredetails.domain.MoreDetailsModelInjector
+import ayds.winchester.songinfo.moredetails.dependencyinjector.MoreDetailsModelInjector
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist.EmptyArtist

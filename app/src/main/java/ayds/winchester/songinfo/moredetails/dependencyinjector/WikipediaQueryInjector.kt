@@ -1,6 +1,10 @@
-package ayds.winchester.songinfo.moredetails.data.external.wikipedia
+package ayds.winchester.songinfo.moredetails.dependencyinjector
 
 import ayds.winchester.songinfo.moredetails.data.external.WikipediaService
+import ayds.winchester.songinfo.moredetails.data.external.wikipedia.JsonToArtistResolver
+import ayds.winchester.songinfo.moredetails.data.external.wikipedia.WikipediaAPI
+import ayds.winchester.songinfo.moredetails.data.external.wikipedia.WikipediaServiceImpl
+import ayds.winchester.songinfo.moredetails.data.external.wikipedia.WikipediaToArtistResolver
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 

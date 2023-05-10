@@ -1,13 +1,14 @@
-package ayds.winchester.songinfo.moredetails.domain
+package ayds.winchester.songinfo.moredetails.dependencyinjector
 
 import android.content.Context
 import ayds.winchester.songinfo.moredetails.domain.repository.ArtistRepository
 import ayds.winchester.songinfo.moredetails.domain.repository.ArtistRepositoryImpl
-import ayds.winchester.songinfo.moredetails.data.external.WikipediaInjector
 import ayds.winchester.songinfo.moredetails.data.external.WikipediaService
 import ayds.winchester.songinfo.moredetails.data.local.ArtistLocalStorage
 import ayds.winchester.songinfo.moredetails.data.local.sqldb.ArtistLocalStorageImpl
 import ayds.winchester.songinfo.moredetails.data.local.sqldb.CursorToArtistMapperImpl
+import ayds.winchester.songinfo.moredetails.domain.MoreDetailsModel
+import ayds.winchester.songinfo.moredetails.domain.MoreDetailsModelImpl
 import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsView
 
 object MoreDetailsModelInjector {
