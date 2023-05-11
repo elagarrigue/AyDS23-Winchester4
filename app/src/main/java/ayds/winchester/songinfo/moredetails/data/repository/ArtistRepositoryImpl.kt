@@ -1,7 +1,7 @@
 package ayds.winchester.songinfo.moredetails.data.repository
 
-import ayds.winchester.songinfo.moredetails.data.external.WikipediaService
-import ayds.winchester.songinfo.moredetails.data.local.ArtistLocalStorage
+import ayds.winchester.songinfo.moredetails.data.repository.external.WikipediaService
+import ayds.winchester.songinfo.moredetails.data.repository.local.ArtistLocalStorage
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist
 import ayds.winchester.songinfo.moredetails.domain.repository.ArtistRepository
 

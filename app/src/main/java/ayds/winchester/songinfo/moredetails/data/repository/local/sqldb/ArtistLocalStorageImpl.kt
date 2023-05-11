@@ -1,11 +1,11 @@
-package ayds.winchester.songinfo.moredetails.data.local.sqldb
+package ayds.winchester.songinfo.moredetails.data.repository.local.sqldb
 
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import ayds.winchester.songinfo.moredetails.data.local.ArtistLocalStorage
+import ayds.winchester.songinfo.moredetails.data.repository.local.ArtistLocalStorage
 
 
 private const val DATABASE_VERSION = 1

@@ -1,4 +1,4 @@
-package ayds.winchester.songinfo.moredetails.data.local.sqldb
+package ayds.winchester.songinfo.moredetails.data.repository.local.sqldb
 
 import android.database.Cursor
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo

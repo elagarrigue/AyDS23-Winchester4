@@ -1,7 +1,7 @@
-package ayds.winchester.songinfo.moredetails.data.external.wikipedia
+package ayds.winchester.songinfo.moredetails.data.repository.external.wikipedia
 
 
-import ayds.winchester.songinfo.moredetails.data.external.WikipediaService
+import ayds.winchester.songinfo.moredetails.data.repository.external.WikipediaService
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
 import retrofit2.Response
 

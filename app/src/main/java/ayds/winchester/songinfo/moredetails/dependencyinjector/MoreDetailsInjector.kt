@@ -1,14 +1,14 @@
 package ayds.winchester.songinfo.moredetails.dependencyinjector
 
 import android.content.Context
-import ayds.winchester.songinfo.moredetails.data.external.WikipediaService
-import ayds.winchester.songinfo.moredetails.data.external.wikipedia.JsonToArtistResolver
-import ayds.winchester.songinfo.moredetails.data.external.wikipedia.WikipediaAPI
-import ayds.winchester.songinfo.moredetails.data.external.wikipedia.WikipediaServiceImpl
-import ayds.winchester.songinfo.moredetails.data.external.wikipedia.WikipediaToArtistResolver
-import ayds.winchester.songinfo.moredetails.data.local.ArtistLocalStorage
-import ayds.winchester.songinfo.moredetails.data.local.sqldb.ArtistLocalStorageImpl
-import ayds.winchester.songinfo.moredetails.data.local.sqldb.CursorToArtistMapperImpl
+import ayds.winchester.songinfo.moredetails.data.repository.external.WikipediaService
+import ayds.winchester.songinfo.moredetails.data.repository.external.wikipedia.JsonToArtistResolver
+import ayds.winchester.songinfo.moredetails.data.repository.external.wikipedia.WikipediaAPI
+import ayds.winchester.songinfo.moredetails.data.repository.external.wikipedia.WikipediaServiceImpl
+import ayds.winchester.songinfo.moredetails.data.repository.external.wikipedia.WikipediaToArtistResolver
+import ayds.winchester.songinfo.moredetails.data.repository.local.ArtistLocalStorage
+import ayds.winchester.songinfo.moredetails.data.repository.local.sqldb.ArtistLocalStorageImpl
+import ayds.winchester.songinfo.moredetails.data.repository.local.sqldb.CursorToArtistMapperImpl
 import ayds.winchester.songinfo.moredetails.data.repository.ArtistRepositoryImpl
 import ayds.winchester.songinfo.moredetails.domain.repository.ArtistRepository
 import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenter

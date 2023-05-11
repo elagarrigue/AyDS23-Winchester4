@@ -1,4 +1,4 @@
-package ayds.winchester.songinfo.moredetails.data.local
+package ayds.winchester.songinfo.moredetails.data.repository.local
 
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
 
