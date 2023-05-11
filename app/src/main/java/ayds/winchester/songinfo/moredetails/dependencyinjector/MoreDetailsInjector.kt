@@ -52,8 +52,7 @@ object MoreDetailsInjector {
         val repository: ArtistRepository =
             ArtistRepositoryImpl(artistLocalStorage, wikipediaService)
 
-        moreDetailsPresenter = MoreDetailsPresenterImpl(repository, MoreDetailsUiState()
-        )
+        moreDetailsPresenter = MoreDetailsPresenterImpl(repository)
     }
 
 
