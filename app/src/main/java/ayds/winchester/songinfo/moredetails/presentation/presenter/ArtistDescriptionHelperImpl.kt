@@ -1,4 +1,4 @@
-package ayds.winchester.songinfo.moredetails.presentation.view
+package ayds.winchester.songinfo.moredetails.presentation.presenter
 
 import android.text.Html
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist

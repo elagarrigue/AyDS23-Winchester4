@@ -13,9 +13,8 @@ import ayds.winchester.songinfo.moredetails.data.repository.ArtistRepositoryImpl
 import ayds.winchester.songinfo.moredetails.domain.repository.ArtistRepository
 import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenter
 import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenterImpl
-import ayds.winchester.songinfo.moredetails.presentation.view.ArtistDescriptionHelper
-import ayds.winchester.songinfo.moredetails.presentation.view.ArtistDescriptionHelperImpl
-import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsUiState
+import ayds.winchester.songinfo.moredetails.presentation.presenter.ArtistDescriptionHelper
+import ayds.winchester.songinfo.moredetails.presentation.presenter.ArtistDescriptionHelperImpl
 import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsView
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory

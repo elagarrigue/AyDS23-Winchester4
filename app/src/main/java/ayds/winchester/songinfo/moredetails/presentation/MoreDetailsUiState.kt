@@ -1,4 +1,4 @@
-package ayds.winchester.songinfo.moredetails.presentation.view
+package ayds.winchester.songinfo.moredetails.presentation
 
 data class MoreDetailsUiState(
     val artistImageUrl: String = DEFAULT_IMAGE,

@@ -1,7 +1,7 @@
 package ayds.winchester.songinfo.moredetails.data.repository.external.wikipedia
 
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
-import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsUiState
+import ayds.winchester.songinfo.moredetails.presentation.MoreDetailsUiState
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 

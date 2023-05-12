@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import ayds.winchester.songinfo.R
 import ayds.winchester.songinfo.moredetails.dependencyinjector.MoreDetailsInjector
+import ayds.winchester.songinfo.moredetails.presentation.MoreDetailsUiState
 import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenter
 import ayds.winchester.songinfo.utils.UtilsInjector.imageLoader
 

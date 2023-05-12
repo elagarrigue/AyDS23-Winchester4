@@ -7,8 +7,7 @@ import ayds.winchester.songinfo.moredetails.domain.entities.Artist
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist.EmptyArtist
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
 import ayds.winchester.songinfo.moredetails.domain.repository.ArtistRepository
-import ayds.winchester.songinfo.moredetails.presentation.view.ArtistDescriptionHelper
-import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsUiState
+import ayds.winchester.songinfo.moredetails.presentation.MoreDetailsUiState
 
 interface MoreDetailsPresenter {
     val artistObservable: Observable<MoreDetailsUiState>
