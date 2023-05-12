@@ -1,7 +1,7 @@
 package ayds.winchester.songinfo.moredetails.data.repository.external.wikipedia
 
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
-import ayds.winchester.songinfo.moredetails.presentation.MoreDetailsUiState
+import ayds.winchester.songinfo.moredetails.domain.entities.BASE_WIKI_URL
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 
@@ -24,7 +24,7 @@ class JsonToArtistResolver : WikipediaToArtistResolver {
                 ArtistInfo(
                     artistName,
                     item.getArtistInfo(),
-                    item.getWikipediaUrl()
+                    BASE_WIKI_URL + item.getWikipediaUrl()
                 )
             }
         } catch (e: Exception) {
@@ -40,7 +40,7 @@ class JsonToArtistResolver : WikipediaToArtistResolver {
 
         private fun JsonObject.getArtistInfo() = this[SNIPPET].asString.replace("\\n", "\n")
 
-        private fun JsonObject.getWikipediaUrl() = MoreDetailsUiState.BASE_WIKI_URL + this[PAGEID]
+        private fun JsonObject.getWikipediaUrl() = this[PAGEID]
 
 
 }

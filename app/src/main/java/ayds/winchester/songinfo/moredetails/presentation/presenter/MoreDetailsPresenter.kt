@@ -28,30 +28,20 @@ class MoreDetailsPresenterImpl(
 
     private fun setArtistUiState(artist: Artist) {
         when (artist) {
-            is ArtistInfo -> updateArtistUiState(artist).let {
-                artistObservable.notify(it)
-            }
-            EmptyArtist -> noUpdateArtistUiState().let {
-                artistObservable.notify(it)
-            }
+                artist -> updateArtistUiState(artist).let {
+                    artistObservable.notify(it)
+                }
         }
     }
 
-    private fun updateArtistUiState(artist: ArtistInfo) : MoreDetailsUiState {
+    private fun updateArtistUiState(artist: Artist) : MoreDetailsUiState {
         var uiState = MoreDetailsUiState()
         uiState = uiState.copy(
-            artistImageUrl = MoreDetailsUiState.DEFAULT_IMAGE,
             artistInfo = artistDescriptionHelper.getArtistDescriptionText(artist),
-            artistUrl = artist.wikipediaUrl,
-        )
-        return uiState
-    }
-    private fun noUpdateArtistUiState() : MoreDetailsUiState {
-        var uiState = MoreDetailsUiState()
-        uiState = uiState.copy(
-            artistImageUrl = MoreDetailsUiState.DEFAULT_IMAGE,
-            artistInfo = artistDescriptionHelper.getArtistDescriptionText(EmptyArtist),
-            artistUrl = MoreDetailsUiState.BASE_WIKI_URL,
+            artistUrl = when (artist) {
+                            is ArtistInfo -> artist.wikipediaUrl
+                            is EmptyArtist -> artist.wikipediaUrl
+                        }
         )
         return uiState
     }
