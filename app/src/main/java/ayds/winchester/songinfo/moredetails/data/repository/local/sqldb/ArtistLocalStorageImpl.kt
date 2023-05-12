@@ -8,8 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import ayds.winchester.songinfo.moredetails.data.repository.local.ArtistLocalStorage
 
 
-private const val DATABASE_VERSION = 1
-private const val DATABASE_NAME="dictionary.db"
+
 
 class ArtistLocalStorageImpl (context: Context,
                               private val cursorToArtistMapper: CursorToArtistMapper,
