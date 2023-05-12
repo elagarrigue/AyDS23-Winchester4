@@ -15,7 +15,6 @@ import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPr
 import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenterImpl
 import ayds.winchester.songinfo.moredetails.presentation.view.ArtistDescriptionHelper
 import ayds.winchester.songinfo.moredetails.presentation.view.ArtistDescriptionHelperImpl
-import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsUiState
 import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsView
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -36,7 +35,7 @@ object MoreDetailsInjector {
         wikipediaToArtistResolver
     )
 
-    val artistDescriptionHelper: ArtistDescriptionHelper = ArtistDescriptionHelperImpl()
+    private val artistDescriptionHelper: ArtistDescriptionHelper = ArtistDescriptionHelperImpl()
 
     private lateinit var  moreDetailsPresenter: MoreDetailsPresenter
 
@@ -52,7 +51,7 @@ object MoreDetailsInjector {
         val repository: ArtistRepository =
             ArtistRepositoryImpl(artistLocalStorage, wikipediaService)
 
-        moreDetailsPresenter = MoreDetailsPresenterImpl(repository)
+        moreDetailsPresenter = MoreDetailsPresenterImpl(repository,artistDescriptionHelper)
     }
 
 
