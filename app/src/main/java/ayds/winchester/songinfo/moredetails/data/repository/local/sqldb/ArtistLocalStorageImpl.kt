@@ -6,10 +6,6 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import ayds.winchester.songinfo.moredetails.data.repository.local.ArtistLocalStorage
-
-
-
-
 class ArtistLocalStorageImpl (context: Context,
                               private val cursorToArtistMapper: CursorToArtistMapper,
 ) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),

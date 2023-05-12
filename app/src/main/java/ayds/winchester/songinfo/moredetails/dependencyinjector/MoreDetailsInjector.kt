@@ -35,7 +35,7 @@ object MoreDetailsInjector {
         wikipediaToArtistResolver
     )
 
-    val artistDescriptionHelper: ArtistDescriptionHelper = ArtistDescriptionHelperImpl()
+    private val artistDescriptionHelper: ArtistDescriptionHelper = ArtistDescriptionHelperImpl()
 
     private lateinit var  moreDetailsPresenter: MoreDetailsPresenter
 
@@ -51,7 +51,7 @@ object MoreDetailsInjector {
         val repository: ArtistRepository =
             ArtistRepositoryImpl(artistLocalStorage, wikipediaService)
 
-        moreDetailsPresenter = MoreDetailsPresenterImpl(repository)
+        moreDetailsPresenter = MoreDetailsPresenterImpl(repository,artistDescriptionHelper)
     }
 
 
