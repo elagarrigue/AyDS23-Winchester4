@@ -55,7 +55,7 @@ class MoreDetailsPresenterImpl(
         uiState = uiState.copy(
             artistImageUrl = MoreDetailsUiState.DEFAULT_IMAGE,
             artistInfo = artistDescriptionHelper.getArtistDescriptionText(EmptyArtist),
-            artistUrl = "",
+            artistUrl = MoreDetailsUiState.BASE_WIKI_URL,
         )
         return uiState
     }

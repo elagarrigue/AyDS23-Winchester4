@@ -1,29 +1,28 @@
 package ayds.winchester.songinfo.moredetails.data.repository.external.wikipedia
 
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
+import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsUiState
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 
 
 interface WikipediaToArtistResolver {
-    fun getArtistFromExternalData(serviceData: String?): ArtistInfo?
+    fun getArtistFromExternalData(serviceData: String?, artistName: String): ArtistInfo?
 }
 
 private const val QUERY = "query"
 private const val SEARCH = "search"
 private const val SNIPPET = "snippet"
 private const val PAGEID = "pageid"
-private const val NAME = "title"
-private const val BASE_WIKI_URL = "https://en.wikipedia.org/?curid="
 
 
 class JsonToArtistResolver : WikipediaToArtistResolver {
 
-    override fun getArtistFromExternalData(serviceData: String?): ArtistInfo? =
+    override fun getArtistFromExternalData(serviceData: String?, artistName: String): ArtistInfo? =
         try {
             serviceData?.getFirstItem()?.let { item ->
                 ArtistInfo(
-                    item.getArtistName(),
+                    artistName,
                     item.getArtistInfo(),
                     item.getWikipediaUrl()
                 )
@@ -39,10 +38,9 @@ class JsonToArtistResolver : WikipediaToArtistResolver {
             return items[0].asJsonObject
         }
 
-        private fun JsonObject.getArtistInfo() = this[SNIPPET].asString
+        private fun JsonObject.getArtistInfo() = this[SNIPPET].asString.replace("\\n", "\n")
 
-        private fun JsonObject.getWikipediaUrl() = BASE_WIKI_URL + this[PAGEID]
+        private fun JsonObject.getWikipediaUrl() = MoreDetailsUiState.BASE_WIKI_URL + this[PAGEID]
 
-        private fun JsonObject.getArtistName() =  this[NAME].asString
 
 }

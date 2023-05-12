@@ -4,5 +4,5 @@ import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
 
 
 interface WikipediaService {
-    fun getArtist(title: String): ArtistInfo?
+    fun getArtist(artistName: String): ArtistInfo?
 }

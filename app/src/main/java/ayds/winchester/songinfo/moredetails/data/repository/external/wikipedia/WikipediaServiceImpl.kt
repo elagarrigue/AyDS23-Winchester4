@@ -10,12 +10,12 @@ class WikipediaServiceImpl(
     private val wikipediaToArtistResolver: WikipediaToArtistResolver,
 ) : WikipediaService {
 
-    override fun getArtist(title: String): ArtistInfo? {
-        val callResponse = getSongFromService(title)
-        return wikipediaToArtistResolver.getArtistFromExternalData(callResponse.body())
+    override fun getArtist(artistName: String): ArtistInfo? {
+        val callResponse = getArtistFromService(artistName)
+        return wikipediaToArtistResolver.getArtistFromExternalData(callResponse.body(),artistName)
     }
 
-    private fun getSongFromService(query: String): Response<String> {
-        return wikipediaAPI.getArtistInfo(query).execute()
+    private fun getArtistFromService(artistName: String): Response<String> {
+        return wikipediaAPI.getArtistInfo(artistName).execute()
     }
 }

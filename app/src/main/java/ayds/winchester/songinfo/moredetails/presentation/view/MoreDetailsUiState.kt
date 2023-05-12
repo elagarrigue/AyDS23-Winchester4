@@ -9,5 +9,6 @@ data class MoreDetailsUiState(
     companion object {
         const val DEFAULT_IMAGE =
             "https://upload.wikimedia.org/wikipedia/commons/8/8c/Wikipedia-logo-v2-es.png"
+        const val BASE_WIKI_URL = "https://en.wikipedia.org/?curid="
     }
 }
