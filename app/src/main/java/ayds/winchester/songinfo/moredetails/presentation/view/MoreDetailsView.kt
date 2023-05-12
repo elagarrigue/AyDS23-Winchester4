@@ -15,15 +15,15 @@ import ayds.winchester.songinfo.utils.UtilsInjector.imageLoader
 interface MoreDetailsView
 
 class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
-    private lateinit var artistInfoTextView: TextView
+    private lateinit var textView: TextView
     private lateinit var wikipediaUrlButton: Button
     private lateinit var wikipediaImageView: ImageView
 
     private lateinit var moreDetailsPresenter: MoreDetailsPresenter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_other_info)
         initAll()
     }
 
@@ -39,8 +39,7 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     }
 
     private fun initProperties() {
-        setContentView(R.layout.activity_other_info)
-        artistInfoTextView = findViewById(R.id.textPane2)
+        textView = findViewById(R.id.textPane2)
         wikipediaImageView = findViewById(R.id.imageView)
         wikipediaUrlButton = findViewById(R.id.openUrlButton)
     }
@@ -66,7 +65,7 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
 
     private fun updateArtistInfo(artistUiState: MoreDetailsUiState) {
         runOnUiThread {
-            artistInfoTextView.text = artistUiState.artistInfo
+            textView.text = artistUiState.artistInfo
         }
     }
 
@@ -79,11 +78,15 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     private fun setWikipediaButton(artistUiState: MoreDetailsUiState) {
         setOpenUrlButton(artistUiState)
     }
+    private fun setIntent(artistUiState: MoreDetailsUiState):Intent{
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(artistUiState.artistUrl)
+        return intent
+    }
 
     private fun setOpenUrlButton(artistUiState: MoreDetailsUiState) {
         wikipediaUrlButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(artistUiState.artistUrl)
+            val intent = setIntent(artistUiState)
             startActivity(intent)
         }
     }
