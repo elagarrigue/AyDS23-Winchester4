@@ -16,7 +16,7 @@ import ayds.winchester.songinfo.utils.UtilsInjector.imageLoader
 interface MoreDetailsView
 
 class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
-    private lateinit var textView: TextView
+    private lateinit var artistInfoTextView : TextView
     private lateinit var wikipediaUrlButton: Button
     private lateinit var wikipediaImageView: ImageView
 
@@ -40,7 +40,7 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     }
 
     private fun initProperties() {
-        textView = findViewById(R.id.textPane2)
+        artistInfoTextView  = findViewById(R.id.artistInfoTextPanel)
         wikipediaImageView = findViewById(R.id.imageView)
         wikipediaUrlButton = findViewById(R.id.openUrlButton)
     }
@@ -66,7 +66,7 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
 
     private fun updateArtistInfo(artistUiState: MoreDetailsUiState) {
         runOnUiThread {
-            textView.text = artistUiState.artistInfo
+            artistInfoTextView.text = artistUiState.artistInfo
         }
     }
 
