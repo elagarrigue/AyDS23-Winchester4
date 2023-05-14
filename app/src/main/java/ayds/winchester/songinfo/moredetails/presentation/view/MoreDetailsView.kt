@@ -79,16 +79,15 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     private fun setWikipediaButton(artistUiState: MoreDetailsUiState) {
         setOpenUrlButton(artistUiState)
     }
-    private fun setIntent(artistUiState: MoreDetailsUiState):Intent{
+    private fun setIntent(artistUiState: MoreDetailsUiState){
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(artistUiState.artistUrl)
-        return intent
+        startActivity(intent)
     }
 
     private fun setOpenUrlButton(artistUiState: MoreDetailsUiState) {
         wikipediaUrlButton.setOnClickListener {
-            val intent = setIntent(artistUiState)
-            startActivity(intent)
+            setIntent(artistUiState)
         }
     }
 
