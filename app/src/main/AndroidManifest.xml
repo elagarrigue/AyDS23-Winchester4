@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ayds.winchester.songinfo.moredetails.fulllogic.OtherInfoWindow"
+        <activity android:name="ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsViewActivity"
            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
