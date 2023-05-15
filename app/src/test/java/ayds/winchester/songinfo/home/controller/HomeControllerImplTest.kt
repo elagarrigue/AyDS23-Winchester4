@@ -40,16 +40,16 @@ class HomeControllerTest {
         verify { homeModel.searchSong("song") }
     }
 
-    /* @Test
+     @Test
      fun `on more details event should navigate to more details`() {
          every { homeView.uiState } returns HomeUiState(songId = "id")
-         val song: Song = mockk { every { artistName } returns "artist" }
+         val song: Song.SpotifySong = mockk { every { artistName } returns "artist" }
          every { homeModel.getSongById("id") } returns song
 
          onActionSubject.notify(HomeUiEvent.MoreDetails)
 
          verify { homeView.navigateToOtherDetails("artist") }
-     }*/
+     }
 
     @Test
     fun `on open song url event should open external link`() {
