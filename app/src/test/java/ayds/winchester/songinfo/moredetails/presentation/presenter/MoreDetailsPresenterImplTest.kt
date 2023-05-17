@@ -19,7 +19,7 @@ class MoreDetailsPresenterImplTest {
     }
 
     @Test
-    fun searchArtistTest() {
+    fun `on search song it should update the correct UiState`() {
         val artistName = "ArtistName"
         val artist = Artist.ArtistInfo("ArtistName", "Description", "https://en.wikipedia.org/?curid=")
 
