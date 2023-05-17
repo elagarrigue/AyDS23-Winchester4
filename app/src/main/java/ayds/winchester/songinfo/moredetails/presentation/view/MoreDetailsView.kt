@@ -3,6 +3,7 @@ package ayds.winchester.songinfo.moredetails.presentation.view
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Html
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -66,7 +67,7 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
 
     private fun updateArtistInfo(artistUiState: MoreDetailsUiState) {
         runOnUiThread {
-            artistInfoTextView.text = artistUiState.artistInfo
+            artistInfoTextView.text = Html.fromHtml(artistUiState.artistInfo)
         }
     }
 

@@ -22,11 +22,11 @@ internal class ArtistDescriptionHelperImplTest{
 
         // Assert
         val expected = "[*]\n" +
-                " Linkin Park is an American rock band from Agoura Hills, California.\n"
+            " <html><div width=400><font face=\"arial\"><b>LINKIN PARK</b> is an American rock band from Agoura Hills, California.</font></div></html>\n"
         assertEquals(expected, result)
     }
     @Test
-    fun `given the artist description text which isn't locally store with the marker`() {
+    fun `given the artist description text which isn't locally store without the marker`() {
         // Arrange
         val artistName = "Linkin Park"
         val artistInfo = "Linkin Park is an American rock band from Agoura Hills, California."
@@ -36,8 +36,8 @@ internal class ArtistDescriptionHelperImplTest{
         val result = artistDescriptionHelper.getArtistDescriptionText(artist)
 
         // Assert
-        val expected = "[*]\n" +
-                " Linkin Park is an American rock band from Agoura Hills, California.\n"
+        val expected = "\n" +
+                       " <html><div width=400><font face=\"arial\"><b>LINKIN PARK</b> is an American rock band from Agoura Hills, California.</font></div></html>\n"
         assertEquals(expected, result)
     }
 
