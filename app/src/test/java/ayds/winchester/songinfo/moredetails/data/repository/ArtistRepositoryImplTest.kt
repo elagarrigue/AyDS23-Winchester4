@@ -21,30 +21,24 @@ import org.junit.Test
 
      @Test
      fun `given an artist who is in database`() {
-         // Arrange
          val artistName = "The Beatles"
          val artistFromLocalStorage =
              Artist.ArtistInfo("The Beatles", "British rock band formed in Liverpool","url", true)
          every { artistLocalStorage.getArtistInfoFromDataBase(artistName) } returns artistFromLocalStorage
 
-         // Act
          val result = artistRepositoryImpl.getArtistByName(artistName)
 
-         // Assert
          verify(exactly = 1) { artistLocalStorage.getArtistInfoFromDataBase(artistName) }
          assertEquals(artistFromLocalStorage, result)
      }
      @Test
      fun `given an artist who isn't in database and isn't in wikipedia`() {
-         // Arrange
          val artistName = "Unknown Artist"
          every { artistLocalStorage.getArtistInfoFromDataBase(artistName) } returns null
          every { artistWikipediaService.getArtist(artistName) } returns null
 
-         // Act
          val result = artistRepositoryImpl.getArtistByName(artistName)
 
-         // Assert
          verify(exactly = 1) { artistLocalStorage.getArtistInfoFromDataBase(artistName) }
          verify(exactly = 1) { artistWikipediaService.getArtist(artistName) }
 
@@ -52,17 +46,14 @@ import org.junit.Test
      }
      @Test
      fun `given an artist who isn't in database and is in wikipedia`() {
-         // Arrange
          val artistName = "The Rolling Stones"
          val artistFromWikipedia =
              Artist.ArtistInfo("The Rolling Stones", "English rock band formed in London","url", false)
          every { artistLocalStorage.getArtistInfoFromDataBase(artistName) } returns null
          every { artistWikipediaService.getArtist(artistName) } returns artistFromWikipedia
 
-         // Act
          val result = artistRepositoryImpl.getArtistByName(artistName)
 
-         // Assert
          verify(exactly = 1) { artistLocalStorage.getArtistInfoFromDataBase(artistName) }
          verify(exactly = 1) { artistWikipediaService.getArtist(artistName) }
          verify(exactly = 1) { artistLocalStorage.saveArtist(artistFromWikipedia) }

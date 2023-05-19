@@ -2,13 +2,15 @@ package ayds.winchester.songinfo.home.view
 
 import ayds.winchester.songinfo.home.model.entities.Song
 import ayds.winchester.songinfo.home.model.entities.Song.SpotifySong
+import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert
 import org.junit.Test
 
 class SongDescriptionHelperTest {
 
-    private val songDescriptionHelper by lazy { SongDescriptionHelperImpl(DateFactoryImpl()) }
+    private val dateFactory: DateFactory = mockk()
+    private val songDescriptionHelper by lazy { SongDescriptionHelperImpl(dateFactory) }
 
     @Test
     fun `given a local song it should return the description`() {
@@ -23,6 +25,7 @@ class SongDescriptionHelperTest {
             "url",
             true,
         )
+        every { dateFactory.getDateConverted(song as SpotifySong).convertDate() } returns "1992(a leap year)"
 
         val result = songDescriptionHelper.getSongDescriptionText(song)
 
@@ -48,6 +51,7 @@ class SongDescriptionHelperTest {
             "url",
             false,
         )
+        every { dateFactory.getDateConverted(song as SpotifySong).convertDate() } returns "1992(a leap year)"
 
         val result = songDescriptionHelper.getSongDescriptionText(song)
 
