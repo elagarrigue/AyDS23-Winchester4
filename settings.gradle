@@ -1,3 +1,6 @@
 include ':app'
 include 'observer'
+
+include ':wikipediadata'
+project(':wikipediadata').projectDir = new File('libs/WikipediaData')
 rootProject.name = "AK Winchester"
