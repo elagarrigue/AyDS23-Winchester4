@@ -40,13 +40,14 @@ internal class DateConverterMonthImpl (private val releaseDate:String): Converte
 internal class DateConverterYearImpl (private val releaseDate:String): Converter {
     private fun getAnioBisiesto(anio : Int) = (anio % 4 == 0) && (anio % 100 != 0 || anio % 400 == 0)
     override fun convertDate(): String{
-        var fecha = releaseDate
-        fecha += if(getAnioBisiesto(Integer.parseInt(releaseDate))){
+        val delimiter = "-"
+        var fecha = releaseDate.split(delimiter)
+        val esBiciesto:String = if(getAnioBisiesto(Integer.parseInt(fecha[0]))){
             "(a leap year)"
         } else{
             "(not a leap year)"
         }
-        return fecha
+        return fecha[0]+esBiciesto
     }
 }
 

@@ -1,10 +1,12 @@
 package ayds.winchester.songinfo.moredetails.presentation.presenter
 
-import android.text.Html
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
 import java.util.*
 
+
+private const val PREFIX = "[*]"
+private const val NO_RESULTS = "No results"
 
 interface ArtistDescriptionHelper {
     fun getArtistDescriptionText(artist: Artist): String
@@ -15,10 +17,10 @@ interface ArtistDescriptionHelper {
         return when (artist) {
             is ArtistInfo ->
                 "${
-                    if (artist.isLocallyStored) "[*]" else ""
+                    if (artist.isLocallyStored) PREFIX else ""
                 }\n" +
-                    " ${Html.fromHtml(textToHtml(artist.artistInfo, artist.artistName))}\n"
-            else -> "No results"
+                    " ${textToHtml(artist.artistInfo, artist.artistName)}\n"
+            else -> NO_RESULTS
         }
     }
 
