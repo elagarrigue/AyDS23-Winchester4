@@ -1,10 +1,11 @@
 package ayds.winchester.songinfo.moredetails.data.repository
 
 
-import ayds.winchester.songinfo.moredetails.data.repository.external.WikipediaService
+import ayds.winchester.artistinfo.external.WikipediaService
 import ayds.winchester.songinfo.moredetails.data.repository.local.ArtistLocalStorage
 import ayds.winchester.songinfo.moredetails.domain.entities.Artist
 import ayds.winchester.songinfo.moredetails.domain.repository.ArtistRepository
+import io.mockk.MockKStubScope
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -60,3 +61,7 @@ import org.junit.Test
          assertEquals(artistFromWikipedia, result)
      }
  }
+
+private infix fun <T, B> MockKStubScope<T, B>.returns(artistFromWikipedia: Artist.ArtistInfo) {
+    TODO("Not yet implemented")
+}
