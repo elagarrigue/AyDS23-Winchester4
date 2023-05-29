@@ -1,11 +1,12 @@
 package ayds.winchester.songinfo.moredetails.data.repository.local.sqldb
 
-import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import ayds.winchester.songinfo.moredetails.data.repository.local.ArtistLocalStorage
+import ayds.winchester.songinfo.moredetails.domain.entities.Card
+
 class ArtistLocalStorageImpl (context: Context,
                               private val cursorToArtistMapper: CursorToArtistMapper,
 ) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),
@@ -13,7 +14,9 @@ class ArtistLocalStorageImpl (context: Context,
     private val projection = arrayOf(
         ARTIST_COLUMN,
         INFO_COLUMN,
-        WIKIPEDIA_URL_COLUMN
+        SOURCE_COLUMN,
+        URL_COLUMN,
+        LOGO_COLUMN
     )
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
@@ -22,11 +25,15 @@ class ArtistLocalStorageImpl (context: Context,
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
-    private fun createMapValues(artist: ArtistInfo): ContentValues {
+    private fun createMapValues(cards: Collection<Card>, artistName: String): ContentValues {
         val values = ContentValues()
-        values.put(ARTIST_COLUMN, artist.artistName)
-        values.put(INFO_COLUMN, artist.artistInfo)
-        values.put(WIKIPEDIA_URL_COLUMN, artist.wikipediaUrl)
+         cards.forEach { card ->
+             values.put(ARTIST_COLUMN, artistName)
+             values.put(INFO_COLUMN, card.description)
+             values.put(SOURCE_COLUMN, card.source)
+             values.put(URL_COLUMN, card.infoURL)
+             values.put(LOGO_COLUMN, card.sourceLogoURL)
+         }
         return values
     }
 
@@ -34,9 +41,9 @@ class ArtistLocalStorageImpl (context: Context,
         return writableDatabase
     }
 
-    override fun saveArtist( artist: ArtistInfo) {
+    override fun saveArtist(card: Collection<Card>, artistName: String) {
         val database = getDataBaseWritable()
-        val values = createMapValues(artist)
+        val values = createMapValues(card, artistName)
         database.insert(ARTISTS_TABLE, null, values)
     }
 
@@ -44,7 +51,7 @@ class ArtistLocalStorageImpl (context: Context,
         return readableDatabase
     }
 
-    override fun getArtistInfoFromDataBase( artistName: String): ArtistInfo? {
+    override fun getArtistInfoFromDataBase( artistName: String): Collection<Card>? {
         val selection = "$ARTIST_COLUMN = ?"
         val selectionArgs = arrayOf(artistName)
         val sortOrder = "$ARTIST_COLUMN DESC"

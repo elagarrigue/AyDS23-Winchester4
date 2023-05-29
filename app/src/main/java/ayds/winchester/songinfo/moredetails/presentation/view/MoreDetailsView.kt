@@ -17,9 +17,17 @@ import ayds.winchester.songinfo.utils.UtilsInjector.imageLoader
 interface MoreDetailsView
 
 class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
-    private lateinit var artistInfoTextView : TextView
-    private lateinit var wikipediaUrlButton: Button
-    private lateinit var wikipediaImageView: ImageView
+    private lateinit var artistInfoTextViewWikipedia : TextView
+    private lateinit var wikipediaUrlButtonWikipedia : Button
+    private lateinit var wikipediaImageViewWikipedia : ImageView
+
+    private lateinit var artistInfoTextViewLastFM : TextView
+    private lateinit var wikipediaUrlButtonLastFM : Button
+    private lateinit var wikipediaImageViewLastFM : ImageView
+
+    private lateinit var artistInfoTextViewNewYorkTime : TextView
+    private lateinit var wikipediaUrlButtonNewYorkTime : Button
+    private lateinit var wikipediaImageViewNewYorkTime : ImageView
 
     private lateinit var moreDetailsPresenter: MoreDetailsPresenter
 
@@ -41,9 +49,17 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     }
 
     private fun initProperties() {
-        artistInfoTextView  = findViewById(R.id.artistInfoTextPanel)
-        wikipediaImageView = findViewById(R.id.imageView)
-        wikipediaUrlButton = findViewById(R.id.openUrlButton)
+        artistInfoTextViewWikipedia  = findViewById(R.id.artistInfoTextPanel)
+        wikipediaImageViewWikipedia = findViewById(R.id.imageView)
+        wikipediaUrlButtonWikipedia = findViewById(R.id.openUrlButton)
+
+        artistInfoTextViewLastFM  = findViewById(R.id.artistInfoTextPanel2)
+        wikipediaImageViewLastFM = findViewById(R.id.imageView2)
+        wikipediaUrlButtonLastFM = findViewById(R.id.openUrlButton2)
+
+        artistInfoTextViewNewYorkTime  = findViewById(R.id.artistInfoTextPanel3)
+        wikipediaImageViewNewYorkTime = findViewById(R.id.imageView3)
+        wikipediaUrlButtonNewYorkTime = findViewById(R.id.openUrlButton3)
     }
 
     private fun initMoreDetailsPresenter() {
@@ -59,37 +75,99 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     private fun initArtistName() = intent.getStringExtra(ARTIST_NAME_EXTRA).toString()
 
 
-    private fun setArtistInfo(artistUiState: MoreDetailsUiState){
-        updateArtistInfo(artistUiState)
-        updateImage(artistUiState)
-        setWikipediaButton(artistUiState)
-    }
-
-    private fun updateArtistInfo(artistUiState: MoreDetailsUiState) {
-        runOnUiThread {
-            artistInfoTextView.text = Html.fromHtml(artistUiState.artistInfo)
+    private fun setArtistInfo(artistUiStateCollection: Collection<MoreDetailsUiState>){
+        artistUiStateCollection.forEach { artistUiState ->
+            if(artistUiState.source == "wikipedia") {
+            updateArtistInfoWikipedia(artistUiState)
+            }
+            if(artistUiState.source == "lastfm") {
+                updateArtistInfoLastFM(artistUiState)
+            }
+            if(artistUiState.source == "newyorktime") {
+                updateArtistInfoNewYorkTime(artistUiState)
+            }
         }
     }
 
-    private fun updateImage(artistUiState: MoreDetailsUiState) {
+    private fun updateArtistInfoWikipedia(artistUiState: MoreDetailsUiState){
+        updateTextWikipedia(artistUiState)
+        updateImageWikipedia(artistUiState)
+        setWikipediaButton(artistUiState)
+
+    }
+
+    private fun updateTextWikipedia(artistUiState: MoreDetailsUiState) {
         runOnUiThread {
-            imageLoader.loadImageIntoView(artistUiState.artistImageUrl, wikipediaImageView)
+                artistInfoTextViewWikipedia.text = Html.fromHtml(artistUiState.artistInfo)
+        }
+    }
+
+    private fun updateImageWikipedia(artistUiState: MoreDetailsUiState) {
+        runOnUiThread {
+                imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, wikipediaImageViewWikipedia)
         }
     }
 
     private fun setWikipediaButton(artistUiState: MoreDetailsUiState) {
-        setOpenUrlButton(artistUiState)
+        wikipediaUrlButtonWikipedia.setOnClickListener {
+            setIntent(artistUiState)
+        }
     }
+
+    private fun updateArtistInfoLastFM(artistUiState: MoreDetailsUiState){
+        updateTextLastFM(artistUiState)
+        updateImageLastFM(artistUiState)
+        setLastFMButton(artistUiState)
+
+    }
+
+    private fun updateTextLastFM(artistUiState: MoreDetailsUiState) {
+        runOnUiThread {
+            artistInfoTextViewLastFM.text = Html.fromHtml(artistUiState.artistInfo)
+        }
+    }
+
+    private fun updateImageLastFM(artistUiState: MoreDetailsUiState) {
+        runOnUiThread {
+            imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, wikipediaImageViewLastFM)
+        }
+    }
+
+    private fun setLastFMButton(artistUiState: MoreDetailsUiState) {
+        wikipediaUrlButtonLastFM.setOnClickListener {
+            setIntent(artistUiState)
+        }
+    }
+
+    private fun updateArtistInfoNewYorkTime(artistUiState: MoreDetailsUiState){
+        updateTextNewYorkTime(artistUiState)
+        updateImageNewYorkTime(artistUiState)
+        setNewYorkTimeButton(artistUiState)
+
+    }
+
+    private fun updateTextNewYorkTime(artistUiState: MoreDetailsUiState) {
+        runOnUiThread {
+            artistInfoTextViewNewYorkTime.text = Html.fromHtml(artistUiState.artistInfo)
+        }
+    }
+
+    private fun updateImageNewYorkTime(artistUiState: MoreDetailsUiState) {
+        runOnUiThread {
+            imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, wikipediaImageViewNewYorkTime)
+        }
+    }
+
+    private fun setNewYorkTimeButton(artistUiState: MoreDetailsUiState) {
+        wikipediaUrlButtonNewYorkTime.setOnClickListener {
+            setIntent(artistUiState)
+        }
+    }
+
     private fun setIntent(artistUiState: MoreDetailsUiState){
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(artistUiState.artistUrl)
         startActivity(intent)
-    }
-
-    private fun setOpenUrlButton(artistUiState: MoreDetailsUiState) {
-        wikipediaUrlButton.setOnClickListener {
-            setIntent(artistUiState)
-        }
     }
 
     companion object {

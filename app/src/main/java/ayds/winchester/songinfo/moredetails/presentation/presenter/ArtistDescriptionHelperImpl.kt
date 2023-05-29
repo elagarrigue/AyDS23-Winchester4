@@ -1,7 +1,6 @@
 package ayds.winchester.songinfo.moredetails.presentation.presenter
 
-import ayds.winchester.songinfo.moredetails.domain.entities.Artist
-import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
+import ayds.winchester.songinfo.moredetails.domain.entities.Card
 import java.util.*
 
 
@@ -9,19 +8,22 @@ private const val PREFIX = "[*]"
 private const val NO_RESULTS = "No results"
 
 interface ArtistDescriptionHelper {
-    fun getArtistDescriptionText(artist: Artist): String
+    fun getArtistDescriptionText(artist: Card, artistName: String): String
 }
 
  class ArtistDescriptionHelperImpl : ArtistDescriptionHelper {
-    override fun getArtistDescriptionText(artist: Artist): String {
-        return when (artist) {
-            is ArtistInfo ->
+    override fun getArtistDescriptionText(card: Card, artistName: String): String {
+        val cardDescription =
+            if (card.description != "")
                 "${
-                    if (artist.isLocallyStored) PREFIX else ""
+                    (if (card.isLocallyStored) PREFIX else "") +
+                            (card.source)
                 }\n" +
-                    " ${textToHtml(artist.artistInfo, artist.artistName)}\n"
-            else -> NO_RESULTS
-        }
+                        " ${textToHtml(card.description, artistName)}\n"
+            else {
+             NO_RESULTS
+            }
+        return cardDescription
     }
 
      private fun textToHtml(artistInfo: String, artistName: String?): String {

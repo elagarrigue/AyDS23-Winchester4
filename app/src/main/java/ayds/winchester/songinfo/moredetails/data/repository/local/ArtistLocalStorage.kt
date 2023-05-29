@@ -1,8 +1,8 @@
 package ayds.winchester.songinfo.moredetails.data.repository.local
 
-import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
+import ayds.winchester.songinfo.moredetails.domain.entities.Card
 
 interface ArtistLocalStorage {
-    fun getArtistInfoFromDataBase( artist: String): ArtistInfo?
-    fun saveArtist( artist: ArtistInfo)
+    fun getArtistInfoFromDataBase( artist: String): Collection<Card>?
+    fun saveArtist(card: Collection<Card>, artistName: String)
 }
