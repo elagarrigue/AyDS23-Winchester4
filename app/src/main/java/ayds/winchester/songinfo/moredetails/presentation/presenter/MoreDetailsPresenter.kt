@@ -41,7 +41,7 @@ class MoreDetailsPresenterImpl(
             uiState = uiState.copy(
                 artistInfo = artistDescriptionHelper.getArtistDescriptionText(card, artistName),
                 artistUrl = card.infoURL,
-                source = card.source,
+                source = card.source.toString(),
                 sourceLogoURL = card.sourceLogoURL,
             )
             uiStateCollection.add(uiState)

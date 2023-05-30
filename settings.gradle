@@ -3,4 +3,8 @@ include 'observer'
 
 include ':wikipediadata'
 project(':wikipediadata').projectDir = new File('libs/WikipediaData')
+include ':lastfm'
+project (':lastfm').projectDir = new File('libs/LastFM')
+include ':newyorktime'
+project (':newyorktime').projectDir = new File('libs/newyorktime')
 rootProject.name = "AK Winchester"
