@@ -3,6 +3,7 @@ package ayds.winchester.songinfo.moredetails.domain.entities
 enum class Source {
     Wikipedia,
     NewYorkTimes,
+    Null,
     LastFM
 }
 

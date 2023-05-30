@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import ayds.winchester.songinfo.R
 import ayds.winchester.songinfo.moredetails.dependencyinjector.MoreDetailsInjector
+import ayds.winchester.songinfo.moredetails.domain.entities.Source
 import ayds.winchester.songinfo.moredetails.presentation.MoreDetailsUiState
 import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenter
 import ayds.winchester.songinfo.utils.UtilsInjector.imageLoader
@@ -18,16 +19,16 @@ interface MoreDetailsView
 
 class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     private lateinit var artistInfoTextViewWikipedia : TextView
-    private lateinit var wikipediaUrlButtonWikipedia : Button
-    private lateinit var wikipediaImageViewWikipedia : ImageView
+    private lateinit var urlButtonWikipedia : Button
+    private lateinit var imageViewWikipedia : ImageView
 
     private lateinit var artistInfoTextViewLastFM : TextView
-    private lateinit var wikipediaUrlButtonLastFM : Button
-    private lateinit var wikipediaImageViewLastFM : ImageView
+    private lateinit var urlButtonLastFM : Button
+    private lateinit var imageViewLastFM : ImageView
 
     private lateinit var artistInfoTextViewNewYorkTime : TextView
-    private lateinit var wikipediaUrlButtonNewYorkTime : Button
-    private lateinit var wikipediaImageViewNewYorkTime : ImageView
+    private lateinit var urlButtonNewYorkTime : Button
+    private lateinit var imageViewNewYorkTime : ImageView
 
     private lateinit var moreDetailsPresenter: MoreDetailsPresenter
 
@@ -50,16 +51,16 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
 
     private fun initProperties() {
         artistInfoTextViewWikipedia  = findViewById(R.id.artistInfoTextPanel)
-        wikipediaImageViewWikipedia = findViewById(R.id.imageView)
-        wikipediaUrlButtonWikipedia = findViewById(R.id.openUrlButton)
+        imageViewWikipedia = findViewById(R.id.imageView)
+        urlButtonWikipedia = findViewById(R.id.openUrlButton)
 
         artistInfoTextViewLastFM  = findViewById(R.id.artistInfoTextPanel2)
-        wikipediaImageViewLastFM = findViewById(R.id.imageView2)
-        wikipediaUrlButtonLastFM = findViewById(R.id.openUrlButton2)
+        imageViewLastFM = findViewById(R.id.imageView2)
+        urlButtonLastFM = findViewById(R.id.openUrlButton2)
 
         artistInfoTextViewNewYorkTime  = findViewById(R.id.artistInfoTextPanel3)
-        wikipediaImageViewNewYorkTime = findViewById(R.id.imageView3)
-        wikipediaUrlButtonNewYorkTime = findViewById(R.id.openUrlButton3)
+        imageViewNewYorkTime = findViewById(R.id.imageView3)
+        urlButtonNewYorkTime = findViewById(R.id.openUrlButton3)
     }
 
     private fun initMoreDetailsPresenter() {
@@ -77,13 +78,13 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
 
     private fun setArtistInfo(artistUiStateCollection: Collection<MoreDetailsUiState>){
         artistUiStateCollection.forEach { artistUiState ->
-            if(artistUiState.source == "wikipedia") {
+            if(artistUiState.source == Source.Wikipedia) {
             updateArtistInfoWikipedia(artistUiState)
             }
-            if(artistUiState.source == "lastfm") {
+            if(artistUiState.source == Source.LastFM) {
                 updateArtistInfoLastFM(artistUiState)
             }
-            if(artistUiState.source == "newyorktime") {
+            if(artistUiState.source == Source.NewYorkTimes) {
                 updateArtistInfoNewYorkTime(artistUiState)
             }
         }
@@ -104,12 +105,12 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
 
     private fun updateImageWikipedia(artistUiState: MoreDetailsUiState) {
         runOnUiThread {
-                imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, wikipediaImageViewWikipedia)
+                imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, imageViewWikipedia)
         }
     }
 
     private fun setWikipediaButton(artistUiState: MoreDetailsUiState) {
-        wikipediaUrlButtonWikipedia.setOnClickListener {
+        urlButtonWikipedia.setOnClickListener {
             setIntent(artistUiState)
         }
     }
@@ -129,12 +130,12 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
 
     private fun updateImageLastFM(artistUiState: MoreDetailsUiState) {
         runOnUiThread {
-            imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, wikipediaImageViewLastFM)
+            imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, imageViewLastFM)
         }
     }
 
     private fun setLastFMButton(artistUiState: MoreDetailsUiState) {
-        wikipediaUrlButtonLastFM.setOnClickListener {
+        urlButtonLastFM.setOnClickListener {
             setIntent(artistUiState)
         }
     }
@@ -154,12 +155,12 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
 
     private fun updateImageNewYorkTime(artistUiState: MoreDetailsUiState) {
         runOnUiThread {
-            imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, wikipediaImageViewNewYorkTime)
+            imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, imageViewNewYorkTime)
         }
     }
 
     private fun setNewYorkTimeButton(artistUiState: MoreDetailsUiState) {
-        wikipediaUrlButtonNewYorkTime.setOnClickListener {
+        urlButtonNewYorkTime.setOnClickListener {
             setIntent(artistUiState)
         }
     }
