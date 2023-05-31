@@ -1,0 +1,39 @@
+package ayds.winchester.songinfo.moredetails.data.repository.external
+
+import ayds.newYork4.artist.external.NYTimesArtistService
+import ayds.newYork4.artist.external.entities.Artist
+import ayds.newYork4.artist.external.entities.NY_TIMES_LOGO_URL
+import ayds.winchester.songinfo.moredetails.domain.entities.Card
+
+internal class NewYorkTimeProxy(private val nYTimesArtist: NYTimesArtistService) : ProxyInterface{
+    override fun getCard(artistName: String): Card? {
+        val newYorkTime = nYTimesArtist.getArtist(artistName)
+        return adaptNewYorkTimeToCard(newYorkTime)
+    }
+
+    private fun adaptNewYorkTimeToCard(newYorkTime: Artist.NYTimesArtist?): Card? {
+        return if (newYorkTime != null) {
+            newYorkTime.url?.let {
+                Card(
+                    description = newYorkTime.info,
+                    infoURL = it,
+                    source = "NewYorkTimes",
+                    sourceLogoURL = NY_TIMES_LOGO_URL
+                )
+            }
+        }
+        else{
+            notFoundCard()
+        }
+    }
+
+    private fun notFoundCard(): Card {
+        return Card(
+            "",
+            "",
+            "",
+            NY_TIMES_LOGO_URL,
+        )
+    }
+
+}
