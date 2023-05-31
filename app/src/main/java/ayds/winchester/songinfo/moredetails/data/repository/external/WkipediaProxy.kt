@@ -5,6 +5,7 @@ import ayds.winchester.artistinfo.external.DEFAULT_IMAGE
 import ayds.winchester.artistinfo.external.WikipediaArtistInfo
 import ayds.winchester.artistinfo.external.WikipediaService
 import ayds.winchester.songinfo.moredetails.domain.entities.Card
+import ayds.winchester.songinfo.moredetails.domain.entities.Source
 
 internal class WikipediaProxy(private val wikipediaService: WikipediaService) : ProxyInterface{
     override fun getCard(artistName: String): Card {
@@ -18,7 +19,7 @@ internal class WikipediaProxy(private val wikipediaService: WikipediaService) : 
             Card(
                 description = wikipedia.artistInfo,
                 infoURL = wikipedia.wikipediaUrl,
-                source = "Wikipedia",
+                source = Source.Wikipedia,
                 sourceLogoURL = wikipedia.logoUrl
             )
         }
@@ -31,7 +32,7 @@ internal class WikipediaProxy(private val wikipediaService: WikipediaService) : 
         return Card(
             "",
             BASE_WIKI_URL,
-            "",
+            Source.Null,
             DEFAULT_IMAGE,
         )
     }

@@ -4,6 +4,7 @@ import ayds.newYork4.artist.external.NYTimesArtistService
 import ayds.newYork4.artist.external.entities.Artist
 import ayds.newYork4.artist.external.entities.NY_TIMES_LOGO_URL
 import ayds.winchester.songinfo.moredetails.domain.entities.Card
+import ayds.winchester.songinfo.moredetails.domain.entities.Source
 
 internal class NewYorkTimeProxy(private val nYTimesArtist: NYTimesArtistService) : ProxyInterface{
     override fun getCard(artistName: String): Card? {
@@ -17,7 +18,7 @@ internal class NewYorkTimeProxy(private val nYTimesArtist: NYTimesArtistService)
                 Card(
                     description = newYorkTime.info,
                     infoURL = it,
-                    source = "NewYorkTimes",
+                    source = Source.NewYorkTimes,
                     sourceLogoURL = NY_TIMES_LOGO_URL
                 )
             }
@@ -31,7 +32,7 @@ internal class NewYorkTimeProxy(private val nYTimesArtist: NYTimesArtistService)
         return Card(
             "",
             "",
-            "",
+            Source.NewYorkTimes,
             NY_TIMES_LOGO_URL,
         )
     }
