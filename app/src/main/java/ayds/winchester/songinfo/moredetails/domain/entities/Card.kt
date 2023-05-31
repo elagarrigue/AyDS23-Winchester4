@@ -10,7 +10,7 @@ enum class Source {
 data class Card(
     var description: String,
     var infoURL: String,
-    var source: Source,
+    var source: String,
     var sourceLogoURL: String,
     var isLocallyStored: Boolean = false
 )

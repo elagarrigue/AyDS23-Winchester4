@@ -41,7 +41,7 @@ object MoreDetailsInjector {
         proxyWikipedia = WikipediaProxy(wikipediaService)
         proxyLastFM = LastFMProxy(lastFMService)
         proxyNewYorkTime = NewYorkTimeProxy(newYorkTimeService)
-        broker = BrokerImpl(listOf(proxyWikipedia, proxyLastFM))
+        broker = BrokerImpl(listOf(proxyWikipedia, proxyLastFM,proxyNewYorkTime))
     }
 
     private val artistDescriptionHelper: ArtistDescriptionHelper = ArtistDescriptionHelperImpl()

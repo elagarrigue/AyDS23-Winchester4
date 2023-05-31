@@ -29,7 +29,7 @@ internal class WikipediaProxy(private val wikipediaService: WikipediaService) : 
                     Card(
                         description = wikipedia.artistInfo,
                         infoURL = wikipedia.wikipediaUrl,
-                        source = Source.Wikipedia,
+                        source = "Wikipedia",
                         sourceLogoURL = wikipedia.logoUrl
                     )
                 }
@@ -42,7 +42,7 @@ internal class WikipediaProxy(private val wikipediaService: WikipediaService) : 
         return Card(
             "",
             BASE_WIKI_URL,
-            Source.Wikipedia,
+            "",
             DEFAULT_IMAGE,
         )
     }
@@ -61,7 +61,7 @@ internal class LastFMProxy(private val lastFMService: ArtistService) : ProxyInte
                     Card(
                         description = lastFM.name,
                         infoURL = lastFM.url,
-                        source = Source.LastFM,
+                        source = "LastFM",
                         sourceLogoURL = lastFM.urlImageLastFM
                     )
                 }
@@ -74,7 +74,7 @@ internal class LastFMProxy(private val lastFMService: ArtistService) : ProxyInte
         return Card(
             "",
             "",
-            Source.LastFM,
+            "",
             URL_IMAGE_LASTFM,
         )
     }
@@ -93,7 +93,7 @@ internal class NewYorkTimeProxy(private val nYTimesArtist: NYTimesArtistService)
                         Card(
                             description = newYorkTime.info,
                             infoURL = it,
-                            source = Source.NewYorkTimes,
+                            source = "NewYorkTimes",
                             sourceLogoURL = NY_TIMES_LOGO_URL
                         )
                     }
@@ -107,7 +107,7 @@ internal class NewYorkTimeProxy(private val nYTimesArtist: NYTimesArtistService)
         return Card(
             "",
             "",
-            Source.NewYorkTimes,
+            "",
             NY_TIMES_LOGO_URL,
         )
     }
