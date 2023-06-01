@@ -78,13 +78,13 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
 
     private fun setArtistInfo(artistUiStateCollection: Collection<MoreDetailsUiState>){
         artistUiStateCollection.forEach { artistUiState ->
-            if(artistUiState.source == Source.Wikipedia) {
+            if(artistUiState.source == "Wikipedia") {
             updateArtistInfoWikipedia(artistUiState)
             }
-            if(artistUiState.source == Source.LastFM) {
+            if(artistUiState.source == "LastFM") {
                 updateArtistInfoLastFM(artistUiState)
             }
-            if(artistUiState.source == Source.NewYorkTimes) {
+            if(artistUiState.source == "NewYorkTimes") {
                 updateArtistInfoNewYorkTime(artistUiState)
             }
         }

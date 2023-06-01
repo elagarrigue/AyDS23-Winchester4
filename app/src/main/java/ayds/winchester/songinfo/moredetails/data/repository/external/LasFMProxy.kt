@@ -4,7 +4,6 @@ import ayds.lastfmservice.Artist
 import ayds.lastfmservice.ArtistService
 import ayds.lastfmservice.URL_IMAGE_LASTFM
 import ayds.winchester.songinfo.moredetails.domain.entities.Card
-import ayds.winchester.songinfo.moredetails.domain.entities.Source
 
 internal class LastFMProxy(private val lastFMService: ArtistService) : ProxyInterface{
     override fun getCard(artistName: String): Card {
@@ -18,7 +17,7 @@ internal class LastFMProxy(private val lastFMService: ArtistService) : ProxyInte
             Card(
                 description = lastFM.name,
                 infoURL = lastFM.url,
-                source = Source.LastFM,
+                source = "LastFM",
                 sourceLogoURL = lastFM.urlImageLastFM
             )
         }
@@ -31,7 +30,7 @@ internal class LastFMProxy(private val lastFMService: ArtistService) : ProxyInte
         return Card(
             "",
             "",
-            Source.Null,
+            "",
             URL_IMAGE_LASTFM,
         )
     }

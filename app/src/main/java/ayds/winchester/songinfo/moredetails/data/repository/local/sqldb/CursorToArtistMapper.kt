@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.database.Cursor
 import android.database.SQLException
 import ayds.winchester.songinfo.moredetails.domain.entities.Card
-import ayds.winchester.songinfo.moredetails.domain.entities.Source
 
 interface CursorToArtistMapper {
     fun map(cursor: Cursor): Collection<Card>?
@@ -22,7 +21,7 @@ class CursorToArtistMapperImpl : CursorToArtistMapper {
                             Card(
                                 description = getString(cursor.getColumnIndexOrThrow(INFO_COLUMN)),
                                 infoURL = getString(cursor.getColumnIndexOrThrow(URL_COLUMN)),
-                                source = getSource(cursor.getColumnIndexOrThrow(SOURCE_COLUMN)),
+                                source = getString(cursor.getColumnIndexOrThrow(SOURCE_COLUMN)),
                                 sourceLogoURL = getString(cursor.getColumnIndexOrThrow(LOGO_COLUMN))
                             )
                         )
@@ -36,5 +35,4 @@ class CursorToArtistMapperImpl : CursorToArtistMapper {
 
         return cards
     }
-
 }
