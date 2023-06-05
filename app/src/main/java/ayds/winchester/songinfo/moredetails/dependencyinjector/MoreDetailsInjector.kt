@@ -12,9 +12,10 @@ import ayds.winchester.songinfo.moredetails.data.repository.local.sqldb.ArtistLo
 import ayds.winchester.songinfo.moredetails.data.repository.local.sqldb.CursorToArtistMapperImpl
 import ayds.winchester.songinfo.moredetails.data.repository.ArtistRepositoryImpl
 import ayds.winchester.songinfo.moredetails.data.repository.external.*
-import ayds.winchester.songinfo.moredetails.data.repository.external.BrokerImpl
+import ayds.winchester.songinfo.moredetails.data.repository.local.BrokerImpl
 import ayds.winchester.songinfo.moredetails.data.repository.external.LastFMProxy
 import ayds.winchester.songinfo.moredetails.data.repository.external.WikipediaProxy
+import ayds.winchester.songinfo.moredetails.data.repository.local.Broker
 import ayds.winchester.songinfo.moredetails.domain.repository.ArtistRepository
 import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenter
 import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenterImpl

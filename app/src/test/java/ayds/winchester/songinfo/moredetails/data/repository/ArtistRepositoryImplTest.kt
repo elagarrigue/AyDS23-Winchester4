@@ -27,7 +27,7 @@ import org.junit.Test
              Artist.ArtistInfo("The Beatles", "British rock band formed in Liverpool","url", true)
          every { artistLocalStorage.getArtistInfoFromDataBase(artistName) } returns artistFromLocalStorage
 
-         val result = artistRepositoryImpl.getArtistByName(artistName)
+         val result = artistRepositoryImpl.getCards(artistName)
 
          verify(exactly = 1) { artistLocalStorage.getArtistInfoFromDataBase(artistName) }
          assertEquals(artistFromLocalStorage, result)
@@ -38,7 +38,7 @@ import org.junit.Test
          every { artistLocalStorage.getArtistInfoFromDataBase(artistName) } returns null
          every { artistWikipediaService.getArtist(artistName) } returns null
 
-         val result = artistRepositoryImpl.getArtistByName(artistName)
+         val result = artistRepositoryImpl.getCards(artistName)
 
          verify(exactly = 1) { artistLocalStorage.getArtistInfoFromDataBase(artistName) }
          verify(exactly = 1) { artistWikipediaService.getArtist(artistName) }
@@ -53,7 +53,7 @@ import org.junit.Test
          every { artistLocalStorage.getArtistInfoFromDataBase(artistName) } returns null
          every { artistWikipediaService.getArtist(artistName) } returns artistFromWikipedia
 
-         val result = artistRepositoryImpl.getArtistByName(artistName)
+         val result = artistRepositoryImpl.getCards(artistName)
 
          verify(exactly = 1) { artistLocalStorage.getArtistInfoFromDataBase(artistName) }
          verify(exactly = 1) { artistWikipediaService.getArtist(artistName) }

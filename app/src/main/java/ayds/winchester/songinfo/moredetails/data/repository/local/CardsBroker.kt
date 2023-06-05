@@ -1,5 +1,6 @@
-package ayds.winchester.songinfo.moredetails.data.repository.external
+package ayds.winchester.songinfo.moredetails.data.repository.local
 
+import ayds.winchester.songinfo.moredetails.data.repository.external.ProxyInterface
 import ayds.winchester.songinfo.moredetails.domain.entities.Card
 
 interface Broker {

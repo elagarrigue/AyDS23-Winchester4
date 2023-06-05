@@ -19,7 +19,7 @@ class MoreDetailsPresenterImpl(
     override val artistObservable = Subject<Collection<MoreDetailsUiState>>()
         override fun searchArtist(artistName: String) {
         Thread {
-            val artist=repository.getArtistByName(artistName)
+            val artist=repository.getCards(artistName)
             if (artist != null) {
                 setArtistUiState(artist,artistName)
             }
