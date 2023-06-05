@@ -10,27 +10,29 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import ayds.winchester.songinfo.R
 import ayds.winchester.songinfo.moredetails.dependencyinjector.MoreDetailsInjector
-import ayds.winchester.songinfo.moredetails.domain.entities.Source
+import ayds.winchester.songinfo.moredetails.domain.entities.Card
 import ayds.winchester.songinfo.moredetails.presentation.MoreDetailsUiState
 import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenter
 import ayds.winchester.songinfo.utils.UtilsInjector.imageLoader
 
 interface MoreDetailsView
 
+private val noResults="No results"
 class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
-    private lateinit var artistInfoTextViewWikipedia : TextView
-    private lateinit var urlButtonWikipedia : Button
-    private lateinit var imageViewWikipedia : ImageView
+    private lateinit var artistInfoTextViewCard1 : TextView
+    private lateinit var urlButtonCard1: Button
+    private lateinit var imageViewCard1 : ImageView
 
-    private lateinit var artistInfoTextViewLastFM : TextView
-    private lateinit var urlButtonLastFM : Button
-    private lateinit var imageViewLastFM : ImageView
+    private lateinit var artistInfoTextViewCard2: TextView
+    private lateinit var urlButtonCard2 : Button
+    private lateinit var imageViewCard2 : ImageView
 
-    private lateinit var artistInfoTextViewNewYorkTime : TextView
-    private lateinit var urlButtonNewYorkTime : Button
-    private lateinit var imageViewNewYorkTime : ImageView
+    private lateinit var artistInfoTextViewCard3 : TextView
+    private lateinit var urlButtonCard3: Button
+    private lateinit var imageViewCard3 : ImageView
 
     private lateinit var moreDetailsPresenter: MoreDetailsPresenter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,17 +52,17 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     }
 
     private fun initProperties() {
-        artistInfoTextViewWikipedia  = findViewById(R.id.artistInfoTextPanel)
-        imageViewWikipedia = findViewById(R.id.imageView)
-        urlButtonWikipedia = findViewById(R.id.openUrlButton)
+        artistInfoTextViewCard1  = findViewById(R.id.artistInfoTextPanel)
+        imageViewCard1 = findViewById(R.id.imageView)
+        urlButtonCard1 = findViewById(R.id.openUrlButton)
 
-        artistInfoTextViewLastFM  = findViewById(R.id.artistInfoTextPanel2)
-        imageViewLastFM = findViewById(R.id.imageView2)
-        urlButtonLastFM = findViewById(R.id.openUrlButton2)
+        artistInfoTextViewCard2  = findViewById(R.id.artistInfoTextPanel2)
+        imageViewCard2 = findViewById(R.id.imageView2)
+        urlButtonCard2 = findViewById(R.id.openUrlButton2)
 
-        artistInfoTextViewNewYorkTime  = findViewById(R.id.artistInfoTextPanel3)
-        imageViewNewYorkTime = findViewById(R.id.imageView3)
-        urlButtonNewYorkTime = findViewById(R.id.openUrlButton3)
+        artistInfoTextViewCard3 = findViewById(R.id.artistInfoTextPanel3)
+        imageViewCard3 = findViewById(R.id.imageView3)
+        urlButtonCard3 = findViewById(R.id.openUrlButton3)
     }
 
     private fun initMoreDetailsPresenter() {
@@ -69,105 +71,113 @@ class MoreDetailsViewActivity : AppCompatActivity(), MoreDetailsView {
     }
 
     private fun initObservers() {
-        moreDetailsPresenter.artistObservable
+        moreDetailsPresenter.cardObservable
             .subscribe { value -> setArtistInfo(value) }
     }
 
     private fun initArtistName() = intent.getStringExtra(ARTIST_NAME_EXTRA).toString()
 
 
-    private fun setArtistInfo(artistUiStateCollection: Collection<MoreDetailsUiState>){
-        artistUiStateCollection.forEach { artistUiState ->
-            if(artistUiState.source == "Wikipedia") {
-            updateArtistInfoWikipedia(artistUiState)
-            }
-            if(artistUiState.source == "LastFM") {
-                updateArtistInfoLastFM(artistUiState)
-            }
-            if(artistUiState.source == "NewYorkTimes") {
-                updateArtistInfoNewYorkTime(artistUiState)
-            }
-        }
-    }
-
-    private fun updateArtistInfoWikipedia(artistUiState: MoreDetailsUiState){
-        updateTextWikipedia(artistUiState)
-        updateImageWikipedia(artistUiState)
-        setWikipediaButton(artistUiState)
-
-    }
-
-    private fun updateTextWikipedia(artistUiState: MoreDetailsUiState) {
+    private fun setArtistInfo(artistUiStateCollection: MoreDetailsUiState){
         runOnUiThread {
-                artistInfoTextViewWikipedia.text = Html.fromHtml(artistUiState.artistInfo)
+            setCardDescription(artistUiStateCollection)
         }
     }
 
-    private fun updateImageWikipedia(artistUiState: MoreDetailsUiState) {
-        runOnUiThread {
-                imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, imageViewWikipedia)
+    private fun setCardDescription(artistUiStateCollection: MoreDetailsUiState){
+        if (artistUiStateCollection.cardList.isEmpty())
+            updateTextCardNoResults()
+        artistUiStateCollection.cardList.forEach { artistUiState ->
+            updateAllArtist(artistUiState)
         }
     }
 
-    private fun setWikipediaButton(artistUiState: MoreDetailsUiState) {
-        urlButtonWikipedia.setOnClickListener {
+    private fun updateAllArtist(artistCard: Card){
+        if (artistInfoTextViewCard1.text.equals(""))
+            updateArtistInfoCard1(artistCard)
+        else
+        if (artistInfoTextViewCard2.text.equals(""))
+            updateArtistInfoCard2(artistCard)
+        else
+        if (artistInfoTextViewCard3.text.equals(""))
+            updateArtistInfoCard3(artistCard)
+    }
+    private fun updateArtistInfoCard1(artistUiState: Card){
+        updateTextCard1(artistUiState)
+        updateImageCard1(artistUiState)
+        setCard1Button(artistUiState)
+    }
+
+    private fun updateTextCardNoResults() {
+            artistInfoTextViewCard1.text = Html.fromHtml(noResults)
+
+    }
+
+    private fun updateTextCard1(artistUiState: Card) {
+            artistInfoTextViewCard1.text = Html.fromHtml(artistUiState.description)
+
+    }
+
+    private fun updateImageCard1(artistUiState: Card) {
+            imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, imageViewCard1)
+
+    }
+
+    private fun setCard1Button(artistUiState: Card) {
+        urlButtonCard1.setOnClickListener {
             setIntent(artistUiState)
         }
     }
 
-    private fun updateArtistInfoLastFM(artistUiState: MoreDetailsUiState){
-        updateTextLastFM(artistUiState)
-        updateImageLastFM(artistUiState)
-        setLastFMButton(artistUiState)
+    private fun updateArtistInfoCard2(artistUiState: Card){
+        updateTextCard2(artistUiState)
+        updateImageCard2(artistUiState)
+        setLastCard2(artistUiState)
 
     }
 
-    private fun updateTextLastFM(artistUiState: MoreDetailsUiState) {
-        runOnUiThread {
-            artistInfoTextViewLastFM.text = Html.fromHtml(artistUiState.artistInfo)
-        }
+    private fun updateTextCard2(artistUiState: Card) {
+            artistInfoTextViewCard2.text = Html.fromHtml(artistUiState.description)
+
     }
 
-    private fun updateImageLastFM(artistUiState: MoreDetailsUiState) {
-        runOnUiThread {
-            imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, imageViewLastFM)
-        }
+    private fun updateImageCard2(artistUiState: Card) {
+            imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, imageViewCard2)
+
     }
 
-    private fun setLastFMButton(artistUiState: MoreDetailsUiState) {
-        urlButtonLastFM.setOnClickListener {
+    private fun setLastCard2(artistUiState: Card) {
+        urlButtonCard2.setOnClickListener {
             setIntent(artistUiState)
         }
     }
 
-    private fun updateArtistInfoNewYorkTime(artistUiState: MoreDetailsUiState){
-        updateTextNewYorkTime(artistUiState)
-        updateImageNewYorkTime(artistUiState)
-        setNewYorkTimeButton(artistUiState)
+    private fun updateArtistInfoCard3(artistUiState: Card){
+        updateTextCard3(artistUiState)
+        updateImageCard3(artistUiState)
+        setCard3TimeButton(artistUiState)
 
     }
 
-    private fun updateTextNewYorkTime(artistUiState: MoreDetailsUiState) {
-        runOnUiThread {
-            artistInfoTextViewNewYorkTime.text = Html.fromHtml(artistUiState.artistInfo)
-        }
+    private fun updateTextCard3(artistUiState: Card) {
+            artistInfoTextViewCard3.text = Html.fromHtml(artistUiState.description)
+
     }
 
-    private fun updateImageNewYorkTime(artistUiState: MoreDetailsUiState) {
-        runOnUiThread {
-            imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, imageViewNewYorkTime)
-        }
+    private fun updateImageCard3(artistUiState: Card) {
+            imageLoader.loadImageIntoView(artistUiState.sourceLogoURL, imageViewCard3)
+
     }
 
-    private fun setNewYorkTimeButton(artistUiState: MoreDetailsUiState) {
-        urlButtonNewYorkTime.setOnClickListener {
+    private fun setCard3TimeButton(artistUiState: Card) {
+        urlButtonCard3.setOnClickListener {
             setIntent(artistUiState)
         }
     }
 
-    private fun setIntent(artistUiState: MoreDetailsUiState){
+    private fun setIntent(artistUiState: Card){
         val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(artistUiState.artistUrl)
+        intent.data = Uri.parse(artistUiState.infoURL)
         startActivity(intent)
     }
 

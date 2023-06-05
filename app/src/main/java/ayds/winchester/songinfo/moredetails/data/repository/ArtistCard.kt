@@ -1,17 +1,17 @@
 package ayds.winchester.songinfo.moredetails.data.repository
 
-import ayds.winchester.songinfo.moredetails.data.repository.local.ArtistLocalStorage
+import ayds.winchester.songinfo.moredetails.data.repository.local.CardsRepository
 import ayds.winchester.songinfo.moredetails.domain.repository.ArtistRepository
 import ayds.winchester.songinfo.moredetails.data.repository.local.Broker
 import ayds.winchester.songinfo.moredetails.domain.entities.Card
 
-class ArtistRepositoryImpl(
-    private val artistCard: ArtistLocalStorage,
+class ArtistCard(
+    private val cardsRepository: CardsRepository,
     private val CardBroker: Broker
 ) : ArtistRepository {
 
     override fun getCards(artistName: String): List<Card> {
-        var artist = artistCard.getArtistInfoFromDataBase(artistName)
+        var artist = cardsRepository.getCards(artistName)
         if (artist != null) {
             when {
                 !artist.isEmpty() -> markArtistAsLocal(artist)
@@ -28,7 +28,7 @@ class ArtistRepositoryImpl(
     }
 
     private fun saveCards(card: Collection<Card>, artistName: String){
-            artistCard.saveArtist(card, artistName)
+            cardsRepository.saveCards(card, artistName)
     }
 
     private fun markArtistAsLocal(cards: Collection<Card>) {

@@ -7,11 +7,11 @@ import java.util.*
 private const val PREFIX = "[*]"
 private const val NO_RESULTS = "No results"
 
-interface ArtistDescriptionHelper {
+interface CardDescriptionHelper {
     fun getArtistDescriptionText(artist: Card, artistName: String): String
 }
 
- class ArtistDescriptionHelperImpl : ArtistDescriptionHelper {
+ class CardDescriptionHelperImpl : CardDescriptionHelper {
     override fun getArtistDescriptionText(card: Card, artistName: String): String {
         val cardDescription =
             if (card.description != "")

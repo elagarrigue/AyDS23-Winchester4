@@ -1,6 +1,6 @@
 package ayds.winchester.songinfo.moredetails.data.repository.local.sqldb
 
-const val ARTISTS_TABLE = "artists"
+const val ARTISTS_TABLE = "cards"
 const val ARTIST_COLUMN="artist"
 const val INFO_COLUMN="info"
 const val SOURCE_COLUMN="source"

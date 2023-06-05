@@ -1,11 +1,8 @@
 package ayds.winchester.songinfo.moredetails.presentation
 
-import ayds.winchester.songinfo.moredetails.domain.entities.Source
+import ayds.winchester.songinfo.moredetails.domain.entities.Card
 
 
 data class MoreDetailsUiState(
-    val artistInfo: String = "",
-    val artistUrl: String = "",
-    var source: String = "",
-    var sourceLogoURL: String = "",
+    var cardList: List<Card>
 )
