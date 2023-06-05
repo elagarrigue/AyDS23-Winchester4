@@ -20,6 +20,7 @@ internal class MoreDetailsPresenterImpl(
         override fun searchArtist(artistName: String) {
         Thread {
             val artist=repository.getCards(artistName)
+            updateCardDescription(artist,artistName)
             setArtistUiState(artist)
         }.start()
     }
@@ -35,8 +36,14 @@ internal class MoreDetailsPresenterImpl(
     }
 
     private fun updateArtistUiState(cards: List<Card>) : MoreDetailsUiState {
-        var uiStateList= MoreDetailsUiState(cards);
+        val uiStateList= MoreDetailsUiState(cards)
         return uiStateList
+    }
+
+    private fun updateCardDescription(cards: List<Card>?,artistName: String) {
+        cards?.forEach{ card ->
+           card.description = cardDescriptionHelper.getArtistDescriptionText(card,artistName)
+        }
     }
 
 }
