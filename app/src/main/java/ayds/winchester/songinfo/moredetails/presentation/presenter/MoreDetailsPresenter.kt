@@ -35,9 +35,8 @@ internal class MoreDetailsPresenterImpl(
         }
     }
 
-    private fun updateArtistUiState(cards: List<Card>) : MoreDetailsUiState {
-        val uiStateList= MoreDetailsUiState(cards)
-        return uiStateList
+    private fun updateArtistUiState(cards: List<Card>): MoreDetailsUiState {
+        return MoreDetailsUiState(cards)
     }
 
     private fun updateCardDescription(cards: List<Card>?,artistName: String) {
