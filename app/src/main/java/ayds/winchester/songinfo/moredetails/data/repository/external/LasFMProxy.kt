@@ -13,17 +13,19 @@ internal class LastFMCardProxy(private val lastFMService: ArtistService) : CardP
 
 
     private fun adaptLastFMProxyToCard(lastFM: Artist.LastFMArtist?): Card? {
-        return if (lastFM != null) {
-            Card(
-                description = lastFM.name,
-                infoURL = lastFM.url,
-                source = Source.LastFM,
-                sourceLogoURL = lastFM.urlImageLastFM
-            )
-        }
-        else{
-            null
+        return try {
+            if (lastFM != null) {
+                Card(
+                    description = lastFM.name,
+                    infoURL = lastFM.url,
+                    source = Source.LastFM,
+                    sourceLogoURL = lastFM.urlImageLastFM
+                )
+            } else {
+                null
+            }
+            } catch (e: Exception) {
+                null
+            }
         }
     }
-
-}

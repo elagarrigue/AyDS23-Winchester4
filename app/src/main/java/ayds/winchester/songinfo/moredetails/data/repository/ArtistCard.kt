@@ -27,11 +27,11 @@ class ArtistCard(
         return artist
     }
 
-    private fun saveCards(card: Collection<Card>, artistName: String){
+    private fun saveCards(card: List<Card>, artistName: String){
             cardsRepository.saveCards(card, artistName)
     }
 
-    private fun markArtistAsLocal(cards: Collection<Card>) {
+    private fun markArtistAsLocal(cards: List<Card>) {
         cards.forEach{ card ->
             card.isLocallyStored = true
         }

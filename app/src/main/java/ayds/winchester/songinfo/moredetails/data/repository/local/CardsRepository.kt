@@ -4,5 +4,5 @@ import ayds.winchester.songinfo.moredetails.domain.entities.Card
 
 interface CardsRepository {
     fun getCards(artist: String): List<Card>
-    fun saveCards(card: Collection<Card>, artistName: String)
+    fun saveCards(card: List<Card>, artistName: String)
 }

@@ -13,15 +13,19 @@ internal class WikipediaCardProxy(private val wikipediaService: WikipediaService
 
 
     private fun adaptWikipediaToCard(wikipedia: WikipediaArtistInfo?): Card? {
-        return if (wikipedia != null) {
-            Card(
-                description = wikipedia.artistInfo,
-                infoURL = wikipedia.wikipediaUrl,
-                source = Source.Wikipedia,
-                sourceLogoURL = wikipedia.logoUrl
-            )
-        }
-        else{
+        return try {
+            if (wikipedia != null) {
+                Card(
+                    description = wikipedia.artistInfo,
+                    infoURL = wikipedia.wikipediaUrl,
+                    source = Source.Wikipedia,
+                    sourceLogoURL = wikipedia.logoUrl
+                )
+            }
+            else{
+                null
+            }
+        } catch (e: Exception) {
             null
         }
     }

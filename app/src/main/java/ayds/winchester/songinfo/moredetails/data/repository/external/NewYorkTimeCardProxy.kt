@@ -13,19 +13,21 @@ internal class NewYorkTimeCardProxy(private val nYTimesArtist: NYTimesArtistServ
     }
 
     private fun adaptNewYorkTimeToCard(newYorkTime: Artist.NYTimesArtist?): Card? {
-        return if (newYorkTime != null) {
-            newYorkTime.url?.let {
-                Card(
-                    description = newYorkTime.info,
-                    infoURL = it,
-                    source = Source.NewYorkTimes,
-                    sourceLogoURL = NY_TIMES_LOGO_URL
-                )
+        return try {
+            if (newYorkTime != null) {
+                newYorkTime.url?.let {
+                    Card(
+                        description = newYorkTime.info,
+                        infoURL = it,
+                        source = Source.NewYorkTimes,
+                        sourceLogoURL = NY_TIMES_LOGO_URL
+                    )
+                }
+            } else {
+                null
+            }
+            } catch (e: Exception) {
+                null
             }
         }
-        else{
-            null
-        }
     }
-
-}

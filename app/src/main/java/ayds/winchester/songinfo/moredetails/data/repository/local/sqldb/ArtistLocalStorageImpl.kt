@@ -25,8 +25,8 @@ class ArtistLocalStorageImpl (context: Context,
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
-    private fun createMapValues(cards: Collection<Card>, artistName: String): ContentValues {
-        val values = ContentValues()
+    private fun createMapValues(cards: List<Card>, artistName: String): ContentValues {
+         val values = ContentValues()
          cards.forEach { card ->
              values.put(ARTIST_COLUMN, artistName)
              values.put(INFO_COLUMN, card.description)
@@ -41,7 +41,7 @@ class ArtistLocalStorageImpl (context: Context,
         return writableDatabase
     }
 
-    override fun saveCards(card: Collection<Card>, artistName: String) {
+    override fun saveCards(card: List<Card>, artistName: String) {
         val database = getDataBaseWritable()
         val values = createMapValues(card, artistName)
         database.insert(ARTISTS_TABLE, null, values)
