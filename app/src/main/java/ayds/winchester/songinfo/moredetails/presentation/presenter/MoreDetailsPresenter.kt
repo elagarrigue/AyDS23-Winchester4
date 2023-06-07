@@ -2,48 +2,47 @@ package ayds.winchester.songinfo.moredetails.presentation.presenter
 
 import ayds.observer.Observable
 import ayds.observer.Subject
-import ayds.winchester.songinfo.moredetails.domain.entities.Artist
-import ayds.winchester.songinfo.moredetails.domain.entities.Artist.EmptyArtist
-import ayds.winchester.songinfo.moredetails.domain.entities.Artist.ArtistInfo
+import ayds.winchester.songinfo.moredetails.domain.entities.Card
 import ayds.winchester.songinfo.moredetails.domain.repository.ArtistRepository
 import ayds.winchester.songinfo.moredetails.presentation.MoreDetailsUiState
 
 interface MoreDetailsPresenter {
-    val artistObservable : Observable<MoreDetailsUiState>
+    val cardObservable : Observable<MoreDetailsUiState>
     fun searchArtist(artistName: String)
 }
 
-class MoreDetailsPresenterImpl(
+internal class MoreDetailsPresenterImpl(
     private val repository: ArtistRepository,
-    private val artistDescriptionHelper: ArtistDescriptionHelper
+    private val cardDescriptionHelper: CardDescriptionHelper
 ): MoreDetailsPresenter {
 
-    override val artistObservable = Subject<MoreDetailsUiState>()
+    override val cardObservable = Subject<MoreDetailsUiState>()
         override fun searchArtist(artistName: String) {
         Thread {
-            val artist=repository.getArtistByName(artistName)
+            val artist=repository.getCards(artistName)
+            updateCardDescription(artist,artistName)
             setArtistUiState(artist)
         }.start()
     }
 
-    private fun setArtistUiState(artist: Artist) {
-        when (artist) {
-                artist -> updateArtistUiState(artist).let {
-                    artistObservable.notify(it)
+    private fun setArtistUiState(cards: List<Card>?) {
+        if (cards != null) {
+            when (cards) {
+                cards -> updateArtistUiState(cards).let {
+                    cardObservable.notify(it)
                 }
+            }
         }
     }
 
-    private fun updateArtistUiState(artist: Artist) : MoreDetailsUiState {
-        var uiState = MoreDetailsUiState()
-        uiState = uiState.copy(
-            artistInfo = artistDescriptionHelper.getArtistDescriptionText(artist),
-            artistUrl = when (artist) {
-                            is ArtistInfo -> artist.wikipediaUrl
-                            is EmptyArtist -> artist.wikipediaUrl
-                        }
-        )
-        return uiState
+    private fun updateArtistUiState(cards: List<Card>): MoreDetailsUiState {
+        return MoreDetailsUiState(cards)
+    }
+
+    private fun updateCardDescription(cards: List<Card>?,artistName: String) {
+        cards?.forEach{ card ->
+           card.description = cardDescriptionHelper.getArtistDescriptionText(card,artistName)
+        }
     }
 
 }

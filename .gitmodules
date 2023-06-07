@@ -1,0 +1,9 @@
+[submodule "libs/wikipediadata"]
+	path = libs/wikipediadata
+	url = https://github.com/joachimpod/AyDSWinchester4-Wikipedia.git
+[submodule "libs/newyorktime"]
+	path = libs/newyorktime
+	url = https://github.com/albanomazzino/AyDS23-NewYork4-Service.git
+[submodule "libs/lastfm"]
+	path = libs/lastfm
+	url = https://github.com/nicolasberti/AyDS-LastFM-Lisboa2.git

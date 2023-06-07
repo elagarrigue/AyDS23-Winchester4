@@ -1,9 +1,8 @@
 package ayds.winchester.songinfo.moredetails.presentation
 
-import ayds.winchester.songinfo.moredetails.domain.entities.DEFAULT_IMAGE
+import ayds.winchester.songinfo.moredetails.domain.entities.Card
+
 
 data class MoreDetailsUiState(
-    val artistImageUrl: String = DEFAULT_IMAGE,
-    val artistInfo: String = "",
-    val artistUrl: String = "",
+    var cardList: List<Card>
 )

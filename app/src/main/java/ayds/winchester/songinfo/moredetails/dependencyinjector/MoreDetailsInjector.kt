@@ -1,41 +1,51 @@
 package ayds.winchester.songinfo.moredetails.dependencyinjector
 
 import android.content.Context
-import ayds.winchester.songinfo.moredetails.data.repository.external.WikipediaService
-import ayds.winchester.songinfo.moredetails.data.repository.external.wikipedia.JsonToArtistResolver
-import ayds.winchester.songinfo.moredetails.data.repository.external.wikipedia.WikipediaAPI
-import ayds.winchester.songinfo.moredetails.data.repository.external.wikipedia.WikipediaServiceImpl
-import ayds.winchester.songinfo.moredetails.data.repository.external.wikipedia.WikipediaToArtistResolver
-import ayds.winchester.songinfo.moredetails.data.repository.local.ArtistLocalStorage
+import ayds.lastfmservice.ArtistService
+import ayds.lastfmservice.LastFMInjector
+import ayds.newYork4.artist.external.NYTimesArtistService
+import ayds.newYork4.artist.external.artists.NYTimesArtistInjector
+import ayds.winchester.artistinfo.external.WikipediaService
+import ayds.winchester.artistinfo.external.WikipediaInjector
+import ayds.winchester.songinfo.moredetails.data.repository.local.CardsRepository
 import ayds.winchester.songinfo.moredetails.data.repository.local.sqldb.ArtistLocalStorageImpl
 import ayds.winchester.songinfo.moredetails.data.repository.local.sqldb.CursorToArtistMapperImpl
-import ayds.winchester.songinfo.moredetails.data.repository.ArtistRepositoryImpl
+import ayds.winchester.songinfo.moredetails.data.repository.ArtistCard
+import ayds.winchester.songinfo.moredetails.data.repository.external.*
+import ayds.winchester.songinfo.moredetails.data.repository.local.BrokerImpl
+import ayds.winchester.songinfo.moredetails.data.repository.external.LastFMCardProxy
+import ayds.winchester.songinfo.moredetails.data.repository.external.WikipediaCardProxy
+import ayds.winchester.songinfo.moredetails.data.repository.local.Broker
 import ayds.winchester.songinfo.moredetails.domain.repository.ArtistRepository
 import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenter
 import ayds.winchester.songinfo.moredetails.presentation.presenter.MoreDetailsPresenterImpl
-import ayds.winchester.songinfo.moredetails.presentation.presenter.ArtistDescriptionHelper
-import ayds.winchester.songinfo.moredetails.presentation.presenter.ArtistDescriptionHelperImpl
+import ayds.winchester.songinfo.moredetails.presentation.presenter.CardDescriptionHelper
+import ayds.winchester.songinfo.moredetails.presentation.presenter.CardDescriptionHelperImpl
 import ayds.winchester.songinfo.moredetails.presentation.view.MoreDetailsView
-import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
-
-private const val BASE_URL = "https://en.wikipedia.org/w/"
 
 object MoreDetailsInjector {
 
-    private val wikipediaAPIRetrofit = Retrofit.Builder()
-                                               .baseUrl(BASE_URL)
-                                               .addConverterFactory(ScalarsConverterFactory.create())
-                                               .build()
-    private val wikipediaAPI = wikipediaAPIRetrofit.create(WikipediaAPI::class.java)
-    private val wikipediaToArtistResolver: WikipediaToArtistResolver = JsonToArtistResolver()
+    private lateinit var wikipediaService: WikipediaService
+    private lateinit var lastFMService: ArtistService
+    private lateinit var newYorkTimeService: NYTimesArtistService
+    private lateinit var proxyWikipedia: CardProxy
+    private lateinit var proxyLastFM: CardProxy
+    private lateinit var proxyNewYorkTime: CardProxy
+    private lateinit var broker: Broker
 
-    private val wikipediaService: WikipediaService =  WikipediaServiceImpl(
-        wikipediaAPI,
-        wikipediaToArtistResolver
-    )
+    private fun initExternalServices() {
+        wikipediaService = WikipediaInjector.getWikipediaService()
+        lastFMService = LastFMInjector.getService()
+        newYorkTimeService = NYTimesArtistInjector.nyTimesArtistService
+    }
+    private fun initBroker(){
+        proxyWikipedia = WikipediaCardProxy(wikipediaService)
+        proxyLastFM = LastFMCardProxy(lastFMService)
+        proxyNewYorkTime = NewYorkTimeCardProxy(newYorkTimeService)
+        broker = BrokerImpl(listOf(proxyWikipedia, proxyLastFM,proxyNewYorkTime))
+    }
 
-    private val artistDescriptionHelper: ArtistDescriptionHelper = ArtistDescriptionHelperImpl()
+    private val cardDescriptionHelper: CardDescriptionHelper = CardDescriptionHelperImpl()
 
     private lateinit var  moreDetailsPresenter: MoreDetailsPresenter
 
@@ -43,15 +53,17 @@ object MoreDetailsInjector {
 
     fun initOnViewStarted(moreDetailsView: MoreDetailsView) {
 
-        val artistLocalStorage: ArtistLocalStorage = ArtistLocalStorageImpl(
+        initExternalServices()
+        initBroker()
+
+        val cardsRepository: CardsRepository = ArtistLocalStorageImpl(
             moreDetailsView as Context, CursorToArtistMapperImpl()
         )
-        val wikipediaService: WikipediaService = wikipediaService
-
         val repository: ArtistRepository =
-            ArtistRepositoryImpl(artistLocalStorage, wikipediaService)
+            ArtistCard(cardsRepository, broker)
 
-        moreDetailsPresenter = MoreDetailsPresenterImpl(repository,artistDescriptionHelper)
+        moreDetailsPresenter = MoreDetailsPresenterImpl(repository,cardDescriptionHelper)
+
     }
 
 
